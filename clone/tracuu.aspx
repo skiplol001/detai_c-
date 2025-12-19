@@ -61,6 +61,10 @@
                     <div class="flower-price">
                         <%# Eval("Gia", "{0:#,##0} VNĐ") %>
                     </div>
+                     <div class="flower-price">
+<asp:Button ID="btnThemgiohang" runat="server" Text="Add to cart" CssClass="btn-search" />               
+
+                      </div>
                 </div>
             </ItemTemplate>
         </asp:DataList>
