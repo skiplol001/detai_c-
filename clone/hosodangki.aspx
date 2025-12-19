@@ -163,6 +163,9 @@
             background-color: #ffe6e6;
             border-radius: 5px;
         }
+        .auto-style8 {
+            height: 46px;
+        }
     </style>
 </head>
 <body>
@@ -170,7 +173,7 @@
         <div>
             <table align="center" class="auto-style1">
                 <tr>
-                    <td colspan="2">
+                    <td colspan="2" class="auto-style8">
                         <h3 class="auto-style3">Thông tin đăng nhập</h3>
                     </td>
                     <td rowspan="13" class="separator">
