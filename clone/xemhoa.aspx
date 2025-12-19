@@ -3,13 +3,10 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
-        /* Container chính */
         .xem-hoa-container { padding: 20px; text-align: center; max-width: 1200px; margin: 0 auto; font-family: 'Segoe UI', Arial, sans-serif; }
         
-        /* Tiêu đề */
         h2 { color: #d81b60; margin-bottom: 20px; text-transform: uppercase; }
 
-        /* Dropdown khu vực lọc */
         .dropdown-container { margin-bottom: 30px; background: #fef0f4; padding: 15px; border-radius: 10px; display: inline-block; }
         .loai-hoa-dropdown { padding: 8px 15px; border: 1px solid #ff80ab; border-radius: 20px; outline: none; min-width: 200px; }
 
@@ -60,7 +57,6 @@
             DataSourceID="SqlDataSourceHoa" OnSelectedIndexChanged="dlHoa_SelectedIndexChanged">
             <ItemTemplate>
                 <div class="flower-item">
-                    <%-- Đường dẫn Images/ trỏ tới D:\clone\clone\Images\ --%>
                     <img src='<%# "Images/" + Eval("Hinh") %>' class="flower-image" alt='<%# Eval("TenHoa") %>' />
                     
                     <div class="flower-name">

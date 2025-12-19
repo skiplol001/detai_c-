@@ -86,7 +86,6 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <!-- Header Section -->
         <header class="header">
             <div class="header-top">
                 <div class="website-name">SHOP HOA TƯƠI</div>
@@ -102,11 +101,9 @@
             </nav>
         </header>
 
-        <!-- Main Content Area -->
         <div class="content-wrapper">
             <div class="form-container">
                 <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                    <!-- Nội dung của từng trang sẽ được load vào đây -->
                 </asp:ContentPlaceHolder>
             </div>
         </div>
