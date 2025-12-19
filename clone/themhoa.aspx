@@ -66,13 +66,11 @@
             </tr>
         </table>
 
-        <%-- DataSource lấy danh mục --%>
         <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
             ConnectionString="<%$ ConnectionStrings:HoaTuoiDB %>" 
             SelectCommand="SELECT * FROM [Loai]">
         </asp:SqlDataSource>
 
-        <%-- DataSource thực hiện Insert (Đảm bảo ControlID khớp với TextBox ở trên) --%>
         <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
             ConnectionString="<%$ ConnectionStrings:HoaTuoiDB %>" 
             InsertCommand="INSERT INTO [Hoa] ([TenHoa], [Gia], [Hinh], [MaLoai], [NgayDang], [SoLuotXem]) VALUES (@TenHoa, @Gia, @Hinh, @MaLoai, @NgayDang, @SoLuotXem)">
