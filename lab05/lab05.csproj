@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="chitiet.aspx" />
+    <Content Include="dangky.aspx" />
     <Content Include="dangnhap.aspx" />
     <Content Include="danhsach.aspx" />
     <Content Include="default.aspx" />
@@ -121,6 +122,13 @@
     </Compile>
     <Compile Include="chitiet.aspx.designer.cs">
       <DependentUpon>chitiet.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="dangky.aspx.cs">
+      <DependentUpon>dangky.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="dangky.aspx.designer.cs">
+      <DependentUpon>dangky.aspx</DependentUpon>
     </Compile>
     <Compile Include="dangnhap.aspx.cs">
       <DependentUpon>dangnhap.aspx</DependentUpon>
