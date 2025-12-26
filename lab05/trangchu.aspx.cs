@@ -27,52 +27,64 @@ namespace lab05
                 int maSach = Convert.ToInt32(args[0]);
                 decimal donGia = Convert.ToDecimal(args[1]);
 
-                // Thêm vào giỏ hàng (không thông báo)
                 ThemVaoCTDatHang(maSach, donGia);
+
+                string script = "showMessage('Đã thêm sản phẩm vào giỏ hàng!', true);";
+                ClientScript.RegisterStartupScript(this.GetType(), "SuccessMessage", script, true);
             }
         }
 
         private void ThemVaoCTDatHang(int maSach, decimal donGia)
         {
             string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    // Đảm bảo có đơn hàng SoDH = 1
-                    KiemTraDonHang(conn);
+                    int soDH = 0;
+                    string getSoDHSql = "SELECT TOP 1 SoDH FROM DonDatHang WHERE MaKH = 2 AND Dagiao = 0 ORDER BY SoDH DESC";
+                    using (SqlCommand cmdGetID = new SqlCommand(getSoDHSql, conn))
+                    {
+                        object result = cmdGetID.ExecuteScalar();
+                        if (result == null)
+                        {
+                            string insertOrder = "INSERT INTO DonDatHang (MaKH, NgayDH, Trigia, Dagiao) VALUES (2, GETDATE(), 0, 0); SELECT SCOPE_IDENTITY();";
+                            using (SqlCommand cmdInsert = new SqlCommand(insertOrder, conn))
+                            {
+                                soDH = Convert.ToInt32(cmdInsert.ExecuteScalar());
+                            }
+                        }
+                        else { soDH = Convert.ToInt32(result); }
+                    }
 
-                    // Thêm hoặc cập nhật
                     string sql = @"
-                        IF NOT EXISTS (SELECT * FROM CTDatHang WHERE MaSach = @MaSach AND SoDH = 1)
-                        BEGIN
-                            INSERT INTO CTDatHang (MaSach, SoDH, Soluong, Dongia, Thanhtien)
-                            VALUES (@MaSach, 1, 1, @Dongia, @Dongia)
-                        END
-                        ELSE
-                        BEGIN
-                            UPDATE CTDatHang 
-                            SET Soluong = Soluong + 1,
-                                Thanhtien = (Soluong + 1) * Dongia
-                            WHERE MaSach = @MaSach AND SoDH = 1
-                        END";
+                IF NOT EXISTS (SELECT * FROM CTDatHang WHERE MaSach = @MaSach AND SoDH = @SoDH)
+                BEGIN
+                    INSERT INTO CTDatHang (MaSach, SoDH, Soluong, Dongia, Thanhtien)
+                    VALUES (@MaSach, @SoDH, 1, @Dongia, @Dongia)
+                END
+                ELSE
+                BEGIN
+                    UPDATE CTDatHang 
+                    SET Soluong = Soluong + 1,
+                        Thanhtien = (Soluong + 1) * Dongia
+                    WHERE MaSach = @MaSach AND SoDH = @SoDH
+                END";
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@MaSach", maSach);
                         cmd.Parameters.AddWithValue("@Dongia", donGia);
-
+                        cmd.Parameters.AddWithValue("@SoDH", soDH);
                         cmd.ExecuteNonQuery();
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Ghi log lỗi (không hiển thị)
-                System.Diagnostics.Debug.WriteLine("Lỗi CTDatHang: " + ex.Message);
+                System.Diagnostics.Debug.WriteLine("Lỗi: " + ex.Message);
             }
         }
 

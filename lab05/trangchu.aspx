@@ -131,22 +131,7 @@
         }
     </style>
     
-    <script>
-        function showMessage(message, isSuccess) {
-            var msgDiv = document.getElementById('messageBox');
-            msgDiv.innerHTML = message;
-            msgDiv.className = 'message ' + (isSuccess ? 'success' : 'error');
-            msgDiv.style.display = 'block';
-
-            setTimeout(function () {
-                msgDiv.style.display = 'none';
-            }, 3000);
-        }
-
-        function showAddingMessage(tenSach) {
-            showMessage('Đang thêm sách "' + tenSach + '" vào giỏ hàng...', true);
-        }
-    </script>
+   
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,279 +12,117 @@ namespace lab05
 {
     public partial class giohang : System.Web.UI.Page
     {
+        string strConn = ConfigurationManager.ConnectionStrings["BookStoreDBConnectionString"]?.ConnectionString
+                         ?? "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                LoadGioHangTuDatabase();
+                LoadGioHang();
             }
         }
 
-        private void LoadGioHangTuDatabase()
+        private void LoadGioHang()
         {
-            DataTable dtGioHang = LayGioHangTuDatabase();
+            DataTable dt = LayDuLieu("SELECT TOP 1 SoDH FROM DonDatHang WHERE MaKH = 2 AND Dagiao = 0 ORDER BY SoDH DESC");
 
-            if (dtGioHang == null || dtGioHang.Rows.Count == 0)
+            if (dt.Rows.Count > 0)
             {
-                pnlEmptyCart.Visible = true;
-                pnlCartContent.Visible = false;
-            }
-            else
-            {
-                pnlEmptyCart.Visible = false;
-                pnlCartContent.Visible = true;
+                int currentSoDH = Convert.ToInt32(dt.Rows[0]["SoDH"]);
+                ViewState["SoDH"] = currentSoDH; // Lưu lại để dùng cho Update/Delete
 
-                rptCartItems.DataSource = dtGioHang;
-                rptCartItems.DataBind();
+                // Query lấy chi tiết giỏ hàng
+                string sql = @"SELECT CT.MaSach, S.TenSach, CT.Dongia, CT.Soluong, CT.Thanhtien, 
+                               ISNULL(S.AnhBia, 'no-image.jpg') as HinhAnh
+                               FROM CTDatHang CT INNER JOIN Sach S ON CT.MaSach = S.MaSach
+                               WHERE CT.SoDH = @SoDH";
 
-                // Tính tổng tiền
-                decimal tongTien = TinhTongTien(dtGioHang);
-                lblTongTien.Text = string.Format("{0:#,##0} VNĐ", tongTien);
-            }
-        }
+                SqlParameter[] p = { new SqlParameter("@SoDH", currentSoDH) };
+                DataTable dtItems = LayDuLieu(sql, p);
 
-        private DataTable LayGioHangTuDatabase()
-        {
-            DataTable dt = new DataTable();
-            string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                if (dtItems.Rows.Count > 0)
                 {
-                    conn.Open();
+                    pnlCartContent.Visible = true;
+                    pnlEmptyCart.Visible = false;
+                    rptCartItems.DataSource = dtItems;
+                    rptCartItems.DataBind();
 
-                    string sql = @"
-                        SELECT 
-                            CT.MaSach,
-                            S.TenSach,
-                            CT.Dongia,
-                            CT.Soluong,
-                            CT.Thanhtien,
-                            ISNULL(S.AnhBia, 'no-image.jpg') as HinhAnh
-                        FROM CTDatHang CT
-                        INNER JOIN Sach S ON CT.MaSach = S.MaSach
-                        WHERE CT.SoDH = 1
-                        ORDER BY CT.MaSach";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {
-                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-                        {
-                            da.Fill(dt);
-                        }
-                    }
+                    // Tính tổng tiền trực tiếp bằng Compute của DataTable để giảm truy vấn SQL
+                    decimal tongTien = Convert.ToDecimal(dtItems.Compute("SUM(Thanhtien)", ""));
+                    lblTongTien.Text = string.Format("{0:#,##0} VNĐ", tongTien);
                 }
+                else { HienGioTrong(); }
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Lỗi đọc giỏ hàng từ database: " + ex.Message);
-                ClientScript.RegisterStartupScript(this.GetType(), "error",
-                    $"alert('Lỗi tải giỏ hàng: {ex.Message.Replace("'", "\\'")}');", true);
-            }
-
-            return dt;
+            else { HienGioTrong(); }
         }
 
-        private decimal TinhTongTien(DataTable dtGioHang)
+        private void HienGioTrong()
         {
-            decimal tongTien = 0;
-            foreach (DataRow row in dtGioHang.Rows)
-            {
-                tongTien += Convert.ToDecimal(row["Thanhtien"]);
-            }
-            return tongTien;
+            pnlCartContent.Visible = false;
+            pnlEmptyCart.Visible = true;
         }
 
         protected void rptCartItems_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
+            int maSach = Convert.ToInt32(e.CommandArgument);
+            int soDH = ViewState["SoDH"] != null ? (int)ViewState["SoDH"] : 0;
+
             if (e.CommandName == "Update")
             {
-                int maSach = Convert.ToInt32(e.CommandArgument);
-                TextBox txtQuantity = (TextBox)e.Item.FindControl("txtQuantity");
-
-                if (int.TryParse(txtQuantity.Text, out int soLuong) && soLuong > 0)
+                TextBox txtQty = (TextBox)e.Item.FindControl("txtQuantity");
+                if (int.TryParse(txtQty.Text, out int qty) && qty > 0)
                 {
-                    CapNhatSoLuongDatabase(maSach, soLuong);
+                    ThucThiSQL("UPDATE CTDatHang SET Soluong=@qty, Thanhtien=@qty*Dongia WHERE MaSach=@ms AND SoDH=@sdh",
+                        new SqlParameter("@qty", qty), new SqlParameter("@ms", maSach), new SqlParameter("@sdh", soDH));
                 }
             }
             else if (e.CommandName == "Delete")
             {
-                int maSach = Convert.ToInt32(e.CommandArgument);
-                XoaKhoiGioHangDatabase(maSach);
+                ThucThiSQL("DELETE FROM CTDatHang WHERE MaSach=@ms AND SoDH=@sdh",
+                    new SqlParameter("@ms", maSach), new SqlParameter("@sdh", soDH));
             }
-
-            LoadGioHangTuDatabase();
-        }
-
-        private void CapNhatSoLuongDatabase(int maSach, int soLuong)
-        {
-            string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    string sql = @"
-                        UPDATE CTDatHang 
-                        SET Soluong = @Soluong,
-                            Thanhtien = @Soluong * Dongia
-                        WHERE MaSach = @MaSach AND SoDH = 1";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@MaSach", maSach);
-                        cmd.Parameters.AddWithValue("@Soluong", soLuong);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "error",
-                    $"alert('Lỗi cập nhật số lượng: {ex.Message.Replace("'", "\\'")}');", true);
-            }
-        }
-
-        private void XoaKhoiGioHangDatabase(int maSach)
-        {
-            string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    string sql = "DELETE FROM CTDatHang WHERE MaSach = @MaSach AND SoDH = 1";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@MaSach", maSach);
-
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
-                        {
-                            ClientScript.RegisterStartupScript(this.GetType(), "success",
-                                "alert('Đã xóa sản phẩm khỏi giỏ hàng!');", true);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "error",
-                    $"alert('Lỗi xóa sản phẩm: {ex.Message.Replace("'", "\\'")}');", true);
-            }
+            LoadGioHang();
         }
 
         protected void btnClearAll_Click(object sender, EventArgs e)
         {
-            XoaToanBoGioHang();
-            LoadGioHangTuDatabase();
+            int soDH = (int)(ViewState["SoDH"] ?? 0);
+            ThucThiSQL("DELETE FROM CTDatHang WHERE SoDH=@sdh", new SqlParameter("@sdh", soDH));
+            LoadGioHang();
         }
 
         protected void btnDatHang_Click(object sender, EventArgs e)
         {
-            // Xử lý đặt hàng
-            XuLyDatHang();
+            int soDH = (int)(ViewState["SoDH"] ?? 0);
+            // Cập nhật trạng thái đơn hàng thành Đã giao (Hoàn tất)
+            string sql = @"UPDATE DonDatHang SET Dagiao = 1, Ngaygiao = GETDATE(), 
+                           Trigia = (SELECT SUM(Thanhtien) FROM CTDatHang WHERE SoDH = @sdh)
+                           WHERE SoDH = @sdh";
+            ThucThiSQL(sql, new SqlParameter("@sdh", soDH));
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Đặt hàng thành công!'); window.location='trangchu.aspx';", true);
+        }
+        private DataTable LayDuLieu(string sql, params SqlParameter[] p)
+        {
+            DataTable dt = new DataTable();
+            using (SqlConnection conn = new SqlConnection(strConn))
+            {
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                if (p != null) cmd.Parameters.AddRange(p);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+            return dt;
         }
 
-        private void XoaToanBoGioHang()
+        private void ThucThiSQL(string sql, params SqlParameter[] p)
         {
-            string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
-
-            try
+            using (SqlConnection conn = new SqlConnection(strConn))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    string sql = "DELETE FROM CTDatHang WHERE SoDH = 1";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {
-                        int rowsAffected = cmd.ExecuteNonQuery();
-
-                        ClientScript.RegisterStartupScript(this.GetType(), "success",
-                            $"alert('Đã xóa {rowsAffected} sản phẩm khỏi giỏ hàng!');", true);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "error",
-                    $"alert('Lỗi xóa giỏ hàng: {ex.Message.Replace("'", "\\'")}');", true);
-            }
-        }
-
-        private void XuLyDatHang()
-        {
-            string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    // Kiểm tra giỏ hàng có sản phẩm không
-                    string checkSql = "SELECT COUNT(*) FROM CTDatHang WHERE SoDH = 1";
-                    using (SqlCommand cmdCheck = new SqlCommand(checkSql, conn))
-                    {
-                        int count = Convert.ToInt32(cmdCheck.ExecuteScalar());
-
-                        if (count == 0)
-                        {
-                            ClientScript.RegisterStartupScript(this.GetType(), "error",
-                                "alert('Giỏ hàng trống! Vui lòng thêm sản phẩm vào giỏ hàng trước khi đặt.');", true);
-                            return;
-                        }
-                    }
-
-                    // Cập nhật thông tin đơn hàng
-                    string updateSql = @"
-                        UPDATE DonDatHang 
-                        SET Dagiao = 0,
-                            Ngaygiao = NULL,
-                            Trigia = (SELECT SUM(Thanhtien) FROM CTDatHang WHERE SoDH = 1)
-                        WHERE SoDH = 1";
-
-                    using (SqlCommand cmdUpdate = new SqlCommand(updateSql, conn))
-                    {
-                        cmdUpdate.ExecuteNonQuery();
-                    }
-
-                    // Thông báo thành công
-                    ClientScript.RegisterStartupScript(this.GetType(), "success",
-                        "alert('Đặt hàng thành công! Đơn hàng của bạn đã được ghi nhận.');", true);
-
-                    // Tạo đơn hàng mới cho lần mua tiếp theo
-                    string newOrderSql = @"
-                        INSERT INTO DonDatHang (SoDH, MaKH, NgayDH, Trigia, Dagiao, Ngaygiao)
-                        VALUES (2, 2, GETDATE(), 0, 0, NULL)";
-
-                    try
-                    {
-                        using (SqlCommand cmdNew = new SqlCommand(newOrderSql, conn))
-                        {
-                            cmdNew.ExecuteNonQuery();
-                        }
-                    }
-                    catch
-                    {
-                        // Bỏ qua nếu đã có SoDH = 2
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "error",
-                    $"alert('Lỗi đặt hàng: {ex.Message.Replace("'", "\\'")}');", true);
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddRange(p);
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
         }
     }
