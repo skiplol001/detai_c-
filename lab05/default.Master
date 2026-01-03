@@ -318,7 +318,7 @@
             <div class="footer-grid">
                 <div>
                     <h4>Về BOOKSTORE</h4>
-                    <p>Chúng tôi tự hào là nền tảng kết nối tri thức hàng đầu, nơi bạn có thể tìm thấy những cuốn sách thay đổi cuộc đời.</p>
+                    <p>Chúng tôi tự hào là nền tảng kết nối tri thức hàng đầu, nơi bạn có thể tìm thấy những cuốn sách thay đổi cuộc đời và mua biệt thự.</p>
                     <div style="display: flex; gap: 15px; margin-top: 20px;">
                         <i class="fa-brands fa-facebook-f" style="cursor:pointer"></i>
                         <i class="fa-brands fa-instagram" style="cursor:pointer"></i>
@@ -339,7 +339,7 @@
                 </div>
                 <div>
                     <h4>Liên hệ</h4>
-                    <p><i class="fa-solid fa-location-dot" style="margin-right: 10px;"></i> arisu satoru, genji fushiguro</p>
+                    <p><i class="fa-solid fa-location-dot" style="margin-right: 10px;"></i> tendou arisu, genji shimada</p>
                     <p><i class="fa-solid fa-phone" style="margin-right: 10px;"></i> 1900 100 không có</p>
                     <p><i class="fa-solid fa-envelope" style="margin-right: 10px;"></i> aquafina@fontaine.com</p>
                 </div>
