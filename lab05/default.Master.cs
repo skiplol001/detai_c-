@@ -8,9 +8,11 @@ using System.Web.UI.WebControls;
 
 namespace lab05
 {
-    public partial class _default : System.Web.UI.MasterPage
+    public partial class Default : System.Web.UI.MasterPage
     {
+        // Chuỗi kết nối Database
         string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -19,6 +21,9 @@ namespace lab05
             }
         }
 
+        /// <summary>
+        /// Truy vấn Database để lấy tổng số lượng sách trong giỏ hàng hiện tại
+        /// </summary>
         public void CapNhatSoLuongGioHang()
         {
             try
@@ -26,7 +31,7 @@ namespace lab05
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    // Lấy tổng số lượng (SUM) của đơn hàng chưa giao mới nhất của MaKH = 2
+                    // Query lấy tổng số lượng từ đơn hàng mới nhất chưa giao của MaKH = 2
                     string sql = @"
                         SELECT ISNULL(SUM(Soluong), 0) 
                         FROM CTDatHang 
@@ -34,17 +39,34 @@ namespace lab05
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
-                        int total = Convert.ToInt32(cmd.ExecuteScalar());
+                        object result = cmd.ExecuteScalar();
+                        int total = (result != null && result != DBNull.Value) ? Convert.ToInt32(result) : 0;
+
+                        // Hiển thị lên giao diện
                         spCartCount.InnerText = total.ToString();
 
-                        // Ẩn số 0 nếu giỏ hàng trống (tùy chọn)
+                        // Ẩn badge nếu giỏ hàng trống (0)
                         spCartCount.Visible = (total > 0);
                     }
                 }
             }
-            catch (Exception )
+            catch (Exception)
             {
                 spCartCount.InnerText = "0";
+                spCartCount.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// Xử lý sự kiện khi nhấn nút Tìm kiếm
+        /// </summary>
+        protected void BtnSearch_Click(object sender, EventArgs e)
+        {
+            string query = txtSearch.Text.Trim();
+            if (!string.IsNullOrEmpty(query))
+            {
+                // Redirect sang trang danh sách kèm tham số search trên URL
+                Response.Redirect("~/danhsach.aspx?search=" + Server.UrlEncode(query));
             }
         }
     }

@@ -15,13 +15,13 @@ namespace lab05
     {
 
         /// <summary>
-        /// rptTitle control.
+        /// hTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptTitle;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl hTitle;
 
         /// <summary>
         /// rptSach control.
@@ -33,21 +33,30 @@ namespace lab05
         protected global::System.Web.UI.WebControls.Repeater rptSach;
 
         /// <summary>
-        /// SqlDataSourceChuDe control.
+        /// lnkPrev control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceChuDe;
+        protected global::System.Web.UI.WebControls.HyperLink lnkPrev;
 
         /// <summary>
-        /// SqlDataSourceSach control.
+        /// rptPagination control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceSach;
+        protected global::System.Web.UI.WebControls.Repeater rptPagination;
+
+        /// <summary>
+        /// lnkNext control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkNext;
     }
 }

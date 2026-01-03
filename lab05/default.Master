@@ -1,271 +1,354 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="default.master.cs" Inherits="lab05._default" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="default.master.cs" Inherits="lab05.Default" %>
 
 <!DOCTYPE html>
-
-<html>
+<html lang="vi">
 <head runat="server">
-    <title>BookStore Online</title>
-    <asp:ContentPlaceHolder ID="head" runat="server">
-    </asp:ContentPlaceHolder>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStore Online | Tri thức là sức mạnh</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+    
     <style>
+        :root {
+            --primary-color: #ff4081;
+            --primary-light: #ff80ab;
+            --primary-dark: #f50057;
+            --bg-body: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f9f9f9;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        .header {
-            background-color: white;
-            padding: 15px 20px;
-            border-bottom: 2px solid #ff4081;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .header-top {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .website-name {
-            font-size: 32px;
-            font-weight: bold;
-            color: #ff4081;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        .main-nav {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            position: relative;
-        }
-        .main-nav a {
-            text-decoration: none;
-            color: #555;
-            font-size: 16px;
-            font-weight: 500;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            position: relative;
-            display: inline-block;
-        }
-        .main-nav a:hover {
-            color: #ff4081;
-            background-color: #fff0f6;
-            transform: translateY(-2px);
-        }
-        .main-nav a.active {
-            color: #ff4081;
-            background-color: #fff0f6;
-            border-bottom: 3px solid #ff4081;
-        }
-        .content-wrapper {
-            min-height: 70vh;
-            padding: 30px 20px;
-        }
-        .form-container {
-            margin: 0 auto;
-            max-width: 1200px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            padding: 30px;
-        }
-        .footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 25px 20px;
-            margin-top: 40px;
-            font-size: 14px;
-        }
-        .footer p {
-            margin: 5px 0;
-        }
-        
-        /* Dropdown Styles */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 250px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1000;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 10px;
-            left: 0;
-            top: 100%;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-        
-        .dropdown-content a {
-            color: #555;
-            padding: 12px 20px;
-            text-decoration: none;
-            display: block;
-            border-bottom: 1px solid #f0f0f0;
-            transition: all 0.2s ease;
-            font-size: 14px;
-            text-align: left;
-        }
-        
-        .dropdown-content a:hover {
-            background-color: #fff0f6;
-            color: #ff4081;
-            padding-left: 25px;
-        }
-        
-        .dropdown-content a:last-child {
-            border-bottom: none;
-        }
-        
-        .dropdown-header {
-            background-color: #ff4081;
-            color: white;
-            padding: 12px 20px;
-            font-weight: bold;
-            font-size: 14px;
-            text-align: center;
+
+        /* --- Modern Sticky Header --- */
+        .navbar-container {
             position: sticky;
             top: 0;
-            z-index: 10;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: var(--transition);
         }
-        
-        /* Custom scrollbar for dropdown */
-        .dropdown-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .dropdown-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        .dropdown-content::-webkit-scrollbar-thumb {
-            background: #ff4081;
-            border-radius: 3px;
-        }
-        
-        .dropdown-content::-webkit-scrollbar-thumb:hover {
-            background: #e91e63;
-        }
-        
-        /* User actions */
-        .user-actions {
-            position: absolute;
-            right: 20px;
-            top: 20px;
+
+        header.header {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
-            gap: 15px;
-        }
-        
-        .user-action-link {
-            color: #ff4081;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            padding: 8px 15px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            background: #fff0f6;
-            border: 1px solid #ff80ab;
-        }
-        
-        .user-action-link:hover {
-            background: #ff4081;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 3px 10px rgba(255, 64, 129, 0.3);
-        }
-        
-        .cart-count {
-            background: #ff4081;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 12px;
-            display: inline-flex;
             align-items: center;
-            justify-content: center;
-            margin-left: 5px;
-            vertical-align: top;
+            justify-content: space-between;
+            padding: 14px 24px;
+        }
+
+        .website-name {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -1px;
+            transition: var(--transition);
+        }
+        .website-name:hover { transform: scale(1.02); }
+        .website-name i { font-size: 28px; }
+
+        /* --- Navigation --- */
+        .main-nav { display: flex; align-items: center; gap: 8px; }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 50%;
+            width: 0; height: 2px;
+            background: var(--primary-color);
+            transition: var(--transition);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover { color: var(--primary-color); }
+        .nav-link:hover::after { width: 60%; }
+
+        /* --- Search Box --- */
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 50px;
+            padding: 4px 18px;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            flex: 0 1 350px;
+            margin: 0 30px;
+        }
+
+        .search-box:focus-within {
+            background: var(--white);
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 4px rgba(255, 64, 129, 0.1);
+            flex: 0 1 420px;
+        }
+
+        .search-input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 10px;
+            font-size: 0.9rem;
+            width: 100%;
+            color: var(--text-main);
+        }
+
+        .search-btn {
+            color: var(--text-muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        .search-btn:hover { color: var(--primary-color); transform: rotate(15deg); }
+
+        /* --- Dropdown --- */
+        .dropdown { position: relative; }
+        .dropdown-content {
+            display: block;
+            position: absolute;
+            top: 120%;
+            left: 0;
+            background: var(--white);
+            min-width: 240px;
+            border-radius: 16px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(0,0,0,0.06);
+            padding: 10px;
+            z-index: 1100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: var(--transition);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 18px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dropdown-item:hover {
+            background: #fff0f6;
+            color: var(--primary-color);
+            padding-left: 24px;
+        }
+
+        /* --- User Actions --- */
+        .user-actions { display: flex; gap: 12px; align-items: center; }
+
+        .btn-action {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-login { color: var(--primary-color); background: #fff0f6; }
+        .btn-login:hover { background: var(--primary-color); color: white; transform: translateY(-2px); }
+
+        .btn-cart { 
+            background: var(--primary-color); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
+        }
+        .btn-cart:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4); }
+
+        .cart-count {
+            background: white;
+            color: var(--primary-color);
+            font-size: 11px;
+            font-weight: 900;
+            border-radius: 50%;
+            width: 20px; height: 20px;
+            display: flex; align-items: center; justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- Main Layout --- */
+        .main-container { max-width: 1300px; margin: 50px auto; padding: 0 25px; min-height: 70vh; }
+        .content-card { 
+            background: var(--white); 
+            border-radius: 24px; 
+            padding: 40px; 
+            box-shadow: var(--shadow-soft); 
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+
+        /* --- Upgraded Footer --- */
+        footer.footer { 
+            background: #0f172a; 
+            color: #94a3b8; 
+            padding: 80px 24px 40px; 
+            margin-top: 100px; 
+            position: relative;
+        }
+        .footer-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 50px;
+            padding-bottom: 50px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .footer h4 { color: white; margin-bottom: 25px; font-weight: 700; font-size: 1.1rem; }
+        .footer p { font-size: 0.95rem; margin-bottom: 15px; }
+        .footer-bottom { 
+            text-align: center; 
+            padding-top: 40px; 
+            font-size: 0.85rem; 
+            letter-spacing: 1px;
+            opacity: 0.7;
         }
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
-        <header class="header">
-            <div class="header-top">
-                <div class="website-name">BOOKSTORE ONLINE</div>
-            </div>
-            
-            <!-- User actions (Đăng nhập & Giỏ hàng) -->
-            <div class="user-actions">
-                <asp:HyperLink ID="lnkDangNhap" runat="server" 
-                    NavigateUrl="~/dangnhap.aspx" 
-                    CssClass="user-action-link">
-                    Đăng nhập
-                </asp:HyperLink>
+        <div class="navbar-container">
+            <header class="header">
+                <a href="trangchu.aspx" class="website-name">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span>BOOKSTORE</span>
+                </a>
                 
-                <asp:HyperLink ID="lnkGioHang" runat="server" 
-                    NavigateUrl="~/giohang.aspx" 
-                    CssClass="user-action-link">
-                     Giỏ hàng
-                    <span class="cart-count" id="spCartCount" runat="server">0</span>
-                </asp:HyperLink>
-            </div>
-            
-            <nav class="main-nav">
-                <asp:HyperLink ID="lnkTrangChu" runat="server" 
-                    NavigateUrl="~/trangchu.aspx">TRANG CHỦ</asp:HyperLink>
-                
-                <div class="dropdown">
-                    <asp:HyperLink ID="lnkDanhSach" runat="server" 
-                        NavigateUrl="~/danhsach.aspx" 
-                        CssClass="dropdown-toggle">
-                         DANH SÁCH
-                    </asp:HyperLink>
-                    <div class="dropdown-content">
-                        <div class="dropdown-header">CHỦ ĐỀ SÁCH</div>
-                        <asp:Repeater ID="rptChuDe" runat="server" DataSourceID="sqlChuDe">
-                            <ItemTemplate>
-                                <asp:HyperLink ID="lnkChuDe" runat="server" 
-                                    NavigateUrl='<%# "~/danhsach.aspx?MaCD=" + Eval("MaCD") %>'
-                                    Text='<%# Eval("Tenchude") %>'
-                                    CssClass="dropdown-item">
-                                </asp:HyperLink>
-                            </ItemTemplate>
-                        </asp:Repeater>
+                <nav class="main-nav">
+                    <asp:HyperLink ID="lnkTrangChu" runat="server" NavigateUrl="~/trangchu.aspx" CssClass="nav-link">Trang chủ</asp:HyperLink>
+                    <div class="dropdown">
+                        <asp:HyperLink ID="lnkDanhSach" runat="server" NavigateUrl="~/danhsach.aspx" CssClass="nav-link">
+                            Danh mục <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; margin-left: 4px; opacity: 0.5;"></i>
+                        </asp:HyperLink>
+                        <div class="dropdown-content">
+                            <asp:Repeater ID="rptChuDe" runat="server" DataSourceID="sqlChuDe">
+                                <ItemTemplate>
+                                    <asp:HyperLink ID="lnkChuDe" runat="server" 
+                                        NavigateUrl='<%# "~/danhsach.aspx?MaCD=" + Eval("MaCD") %>'
+                                        Text='<%# Eval("Tenchude") %>' CssClass="dropdown-item">
+                                    </asp:HyperLink>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </div>
                     </div>
-                </div>
-            </nav>
-        </header>
+                </nav>
 
-        <div class="content-wrapper">
-            <div class="form-container">
-                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
-                </asp:ContentPlaceHolder>
-            </div>
+                <div class="search-box">
+                    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Tìm tên sách, tác giả..."></asp:TextBox>
+                    <asp:LinkButton ID="btnSearch" runat="server" CssClass="search-btn" OnClick="BtnSearch_Click">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </asp:LinkButton>
+                </div>
+
+                <div class="user-actions">
+                    <asp:HyperLink ID="lnkDangNhap" runat="server" NavigateUrl="~/dangnhap.aspx" CssClass="btn-action btn-login">
+                        <i class="fa-regular fa-user-circle"></i> Tài khoản
+                    </asp:HyperLink>
+                    <asp:HyperLink ID="lnkGioHang" runat="server" NavigateUrl="~/giohang.aspx" CssClass="btn-action btn-cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-count" id="spCartCount" runat="server">0</span>
+                    </asp:HyperLink>
+                </div>
+            </header>
         </div>
 
+        <main class="main-container">
+            <div class="content-card">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+            </div>
+        </main>
+
         <footer class="footer">
-            ĐÂY LÀ FOOOTER
+            <div class="footer-grid">
+                <div>
+                    <h4>Về BOOKSTORE</h4>
+                    <p>Chúng tôi tự hào là nền tảng kết nối tri thức hàng đầu, nơi bạn có thể tìm thấy những cuốn sách thay đổi cuộc đời.</p>
+                    <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <i class="fa-brands fa-facebook-f" style="cursor:pointer"></i>
+                        <i class="fa-brands fa-instagram" style="cursor:pointer"></i>
+                        <i class="fa-brands fa-tiktok" style="cursor:pointer"></i>
+                    </div>
+                </div>
+                <div>
+                    <h4>Dịch vụ</h4>
+                    <p>Chính sách bảo hành</p>
+                    <p>Vận chuyển nhanh</p>
+                    <p>Thanh toán bảo mật</p>
+                </div>
+                <div>
+                    <h4>Liên kết</h4>
+                    <p>Trang chủ</p>
+                    <p>Tin tức</p>
+                    <p>Tuyển dụng</p>
+                </div>
+                <div>
+                    <h4>Liên hệ</h4>
+                    <p><i class="fa-solid fa-location-dot" style="margin-right: 10px;"></i> arisu satoru, genji fushiguro</p>
+                    <p><i class="fa-solid fa-phone" style="margin-right: 10px;"></i> 1900 100 không có</p>
+                    <p><i class="fa-solid fa-envelope" style="margin-right: 10px;"></i> aquafina@fontaine.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2024 BOOKSTORE ONLINE. Crafted with <i class="fa-solid fa-heart" style="color:var(--primary-color)"></i> by Furina de Fontaine.
+            </div>
         </footer>
-        
+
         <asp:SqlDataSource ID="sqlChuDe" runat="server" 
             ConnectionString="Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True"
             SelectCommand="SELECT MaCD, Tenchude FROM ChuDe ORDER BY Tenchude">

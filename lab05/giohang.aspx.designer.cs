@@ -24,15 +24,6 @@ namespace lab05
         protected global::System.Web.UI.WebControls.Panel pnlEmptyCart;
 
         /// <summary>
-        /// lnkBackToShop control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkBackToShop;
-
-        /// <summary>
         /// pnlCartContent control.
         /// </summary>
         /// <remarks>
@@ -60,21 +51,21 @@ namespace lab05
         protected global::System.Web.UI.WebControls.Label lblTongTien;
 
         /// <summary>
-        /// btnClearAll control.
+        /// btnClear control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClearAll;
+        protected global::System.Web.UI.WebControls.Button btnClear;
 
         /// <summary>
-        /// btnDatHang control.
+        /// btnOrder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDatHang;
+        protected global::System.Web.UI.WebControls.LinkButton btnOrder;
     }
 }
