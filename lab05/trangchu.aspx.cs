@@ -1,117 +1,82 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using System.Configuration;
 
 namespace lab05
 {
     public partial class trangchu : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-           
-        }
-        
+        string strCon = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
+
+        protected void Page_Load(object sender, EventArgs e) { }
 
         protected void rptSach_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-
             if (e.CommandName == "ThemGioHang")
             {
-                string[] args = e.CommandArgument.ToString().Split('|');
-                int maSach = Convert.ToInt32(args[0]);
-                decimal donGia = Convert.ToDecimal(args[1]);
+                int maSach = Convert.ToInt32(e.CommandArgument);
+                ThemSachVaoSession(maSach);
 
-                ThemVaoCTDatHang(maSach, donGia);
-
-                string script = "showMessage('Đã thêm sản phẩm vào giỏ hàng!', true);";
-                ClientScript.RegisterStartupScript(this.GetType(), "SuccessMessage", script, true);
+                // Cập nhật số lượng trên Header của Master Page
+                var masterPage = this.Master as Default;
+                if (masterPage != null) masterPage.CapNhatSoLuongGioHang();
             }
         }
 
-        private void ThemVaoCTDatHang(int maSach, decimal donGia)
+        private void ThemSachVaoSession(int maSach)
         {
-            string connectionString = "Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True";
-            try
+            DataTable dtCart;
+            // 1. Lấy hoặc khởi tạo giỏ hàng từ Session
+            if (Session["Cart"] == null)
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                dtCart = new DataTable();
+                dtCart.Columns.Add("MaSach", typeof(int));
+                dtCart.Columns.Add("TenSach", typeof(string));
+                dtCart.Columns.Add("HinhAnh", typeof(string));
+                dtCart.Columns.Add("Dongia", typeof(decimal));
+                dtCart.Columns.Add("Soluong", typeof(int));
+                dtCart.Columns.Add("Thanhtien", typeof(decimal));
+            }
+            else { dtCart = (DataTable)Session["Cart"]; }
+
+            // 2. Kiểm tra sách đã có trong giỏ chưa
+            bool exists = false;
+            foreach (DataRow row in dtCart.Rows)
+            {
+                if ((int)row["MaSach"] == maSach)
                 {
+                    row["Soluong"] = (int)row["Soluong"] + 1;
+                    row["Thanhtien"] = (int)row["Soluong"] * (decimal)row["Dongia"];
+                    exists = true; break;
+                }
+            }
+
+            // 3. Nếu chưa có, lấy thông tin từ DB và thêm mới
+            if (!exists)
+            {
+                using (SqlConnection conn = new SqlConnection(strCon))
+                {
+                    string sql = "SELECT MaSach, TenSach, AnhBia, Dongia FROM Sach WHERE MaSach = @ID";
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@ID", maSach);
                     conn.Open();
-
-                    int soDH = 0;
-                    string getSoDHSql = "SELECT TOP 1 SoDH FROM DonDatHang WHERE MaKH = 2 AND Dagiao = 0 ORDER BY SoDH DESC";
-                    using (SqlCommand cmdGetID = new SqlCommand(getSoDHSql, conn))
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.Read())
                     {
-                        object result = cmdGetID.ExecuteScalar();
-                        if (result == null)
-                        {
-                            string insertOrder = "INSERT INTO DonDatHang (MaKH, NgayDH, Trigia, Dagiao) VALUES (2, GETDATE(), 0, 0); SELECT SCOPE_IDENTITY();";
-                            using (SqlCommand cmdInsert = new SqlCommand(insertOrder, conn))
-                            {
-                                soDH = Convert.ToInt32(cmdInsert.ExecuteScalar());
-                            }
-                        }
-                        else { soDH = Convert.ToInt32(result); }
-                    }
-
-                    string sql = @"
-                IF NOT EXISTS (SELECT * FROM CTDatHang WHERE MaSach = @MaSach AND SoDH = @SoDH)
-                BEGIN
-                    INSERT INTO CTDatHang (MaSach, SoDH, Soluong, Dongia, Thanhtien)
-                    VALUES (@MaSach, @SoDH, 1, @Dongia, @Dongia)
-                END
-                ELSE
-                BEGIN
-                    UPDATE CTDatHang 
-                    SET Soluong = Soluong + 1,
-                        Thanhtien = (Soluong + 1) * Dongia
-                    WHERE MaSach = @MaSach AND SoDH = @SoDH
-                END";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@MaSach", maSach);
-                        cmd.Parameters.AddWithValue("@Dongia", donGia);
-                        cmd.Parameters.AddWithValue("@SoDH", soDH);
-                        cmd.ExecuteNonQuery();
+                        DataRow newRow = dtCart.NewRow();
+                        newRow["MaSach"] = dr["MaSach"];
+                        newRow["TenSach"] = dr["TenSach"];
+                        newRow["HinhAnh"] = dr["AnhBia"];
+                        newRow["Dongia"] = dr["Dongia"];
+                        newRow["Soluong"] = 1;
+                        newRow["Thanhtien"] = dr["Dongia"];
+                        dtCart.Rows.Add(newRow);
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine("Lỗi: " + ex.Message);
-            }
-        }
-
-        private void KiemTraDonHang(SqlConnection conn)
-        {
-            try
-            {
-                string checkSql = "SELECT COUNT(*) FROM DonDatHang WHERE SoDH = 1";
-                using (SqlCommand cmd = new SqlCommand(checkSql, conn))
-                {
-                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-                    if (count == 0)
-                    {
-                        string insertSql = @"
-                            INSERT INTO DonDatHang (SoDH, MaKH, NgayDH, Trigia, Dagiao, Ngaygiao)
-                            VALUES (1, 2, GETDATE(), 0, 0, NULL)";
-
-                        using (SqlCommand cmdInsert = new SqlCommand(insertSql, conn))
-                        {
-                            cmdInsert.ExecuteNonQuery();
-                        }
-                    }
-                }
-            }
-            catch
-            {
-            }
+            Session["Cart"] = dtCart;
         }
     }
 }

@@ -81,7 +81,6 @@ namespace lab05
                 }
 
                 Session["Cart"] = dtCart;
-                Response.Write("<script>alert('Đã thêm vào giỏ hàng!'); window.location='giohang.aspx';</script>");
             }
         }
 

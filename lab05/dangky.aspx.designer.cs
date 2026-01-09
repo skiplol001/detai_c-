@@ -24,13 +24,13 @@ namespace lab05
         protected global::System.Web.UI.WebControls.TextBox txtHoTen;
 
         /// <summary>
-        /// rfvTenHoa control.
+        /// rfv1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvTenHoa;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv1;
 
         /// <summary>
         /// txtTendangnhap control.
@@ -42,58 +42,49 @@ namespace lab05
         protected global::System.Web.UI.WebControls.TextBox txtTendangnhap;
 
         /// <summary>
-        /// rfvtendangnhap control.
+        /// rfv2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvtendangnhap;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv2;
 
         /// <summary>
-        /// txtmatkhau control.
+        /// txtMatkhau control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtmatkhau;
+        protected global::System.Web.UI.WebControls.TextBox txtMatkhau;
 
         /// <summary>
-        /// rfvmk control.
+        /// rfv3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvmk;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv3;
 
         /// <summary>
-        /// txtcfmk control.
+        /// txtCfmk control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtcfmk;
+        protected global::System.Web.UI.WebControls.TextBox txtCfmk;
 
         /// <summary>
-        /// rfvcfmk control.
+        /// cv1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvcfmk;
-
-        /// <summary>
-        /// txtNgay control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNgay;
+        protected global::System.Web.UI.WebControls.CompareValidator cv1;
 
         /// <summary>
         /// txtEmail control.
@@ -105,13 +96,13 @@ namespace lab05
         protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
-        /// txtDiachi control.
+        /// rev1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDiachi;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rev1;
 
         /// <summary>
         /// txtSDT control.
@@ -123,13 +114,31 @@ namespace lab05
         protected global::System.Web.UI.WebControls.TextBox txtSDT;
 
         /// <summary>
-        /// rfvsdt control.
+        /// rfv4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvsdt;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv4;
+
+        /// <summary>
+        /// txtDiachi control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtDiachi;
+
+        /// <summary>
+        /// txtNgay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNgay;
 
         /// <summary>
         /// btndangky control.
