@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\bg.gif" />
     <Content Include="khach\chitiet.aspx" />
     <Content Include="khach\dangky.aspx" />
     <Content Include="khach\dangnhap.aspx" />
