@@ -12,6 +12,9 @@
         .btn-submit { width: 100%; padding: 15px; background: linear-gradient(135deg, #ff4081, #ff80ab); color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 10px; }
         .btn-submit:hover { filter: brightness(1.1); }
         .validator-msg { font-size: 12px; display: block; margin-top: 5px; }
+        /* Style cho checkbox */
+        .checkbox-container { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #ff4081; cursor: pointer; }
+        .checkbox-container input { width: 18px; height: 18px; cursor: pointer; }
     </style>
 </asp:Content>
 
@@ -69,6 +72,14 @@
                 <tr>
                     <td class="label-cell">Ngày sinh:</td>
                     <td><asp:TextBox ID="txtNgay" runat="server" CssClass="text-input" TextMode="Date"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td class="label-cell">Loại tài khoản:</td>
+                    <td>
+                        <div class="checkbox-container">
+                            <asp:CheckBox ID="chkBanHang" runat="server" Text=" Đăng ký bán hàng" />
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">

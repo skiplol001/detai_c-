@@ -58,7 +58,7 @@
                 <ItemTemplate>
                     <div class="book-item">
                         <div class="image-wrapper">
-                            <img src='<%# "Images/" + (Eval("AnhBia") != DBNull.Value ? Eval("AnhBia") : "no-image.jpg") %>' class="book-image" />
+                            <img src='<%# "../Images/" + (Eval("AnhBia") != DBNull.Value ? Eval("AnhBia") : "no-image.jpg") %>' class="book-image" />
                         </div>
                         <div class="book-info">
                             <div class="book-name" title='<%# Eval("TenSach") %>'><%# Eval("TenSach") %></div>

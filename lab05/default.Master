@@ -13,356 +13,139 @@
     <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
     
     <style>
+        /* --- BIẾN TOÀN CỤC --- */
         :root {
-            --primary-color: #ff4081;
-            --primary-light: #ff80ab;
-            --primary-dark: #f50057;
-            --bg-body: #f8fafc;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --white: #ffffff;
-            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --primary-color: #ff4081; --primary-light: #ff80ab; --primary-dark: #f50057;
+            --seller-color: #6366f1; --bg-body: #f8fafc; --text-main: #0f172a;
+            --text-muted: #64748b; --white: #ffffff; --footer-bg: #0f172a;
+            --shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 80px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* --- Modern Sticky Header --- */
+        /* --- HEADER STICKY (GLASSMORPHISM) --- */
         .navbar-container {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            transition: var(--transition);
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            height: var(--header-height);
+            display: flex; align-items: center;
         }
 
         header.header {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 24px;
+            max-width: 1400px; margin: 0 auto; width: 100%;
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
         }
 
-        .website-name {
-            font-size: 24px;
-            font-weight: 800;
-            color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: -1px;
-            transition: var(--transition);
-        }
-        .website-name:hover { transform: scale(1.02); }
-        .website-name i { font-size: 28px; }
+        .website-name { font-size: 26px; font-weight: 800; color: var(--primary-color); text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: -1px; }
 
-        /* --- Navigation --- */
-        .main-nav { display: flex; align-items: center; gap: 8px; }
+        /* --- MENU --- */
+        .main-nav { display: flex; align-items: center; gap: 5px; }
+        .nav-link { text-decoration: none; color: var(--text-main); font-weight: 600; padding: 10px 16px; border-radius: 10px; transition: var(--transition); font-size: 0.95rem; }
+        .nav-link:hover { color: var(--primary-color); background: rgba(255, 64, 129, 0.05); }
 
-        .nav-link {
-            text-decoration: none;
-            color: var(--text-main);
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: var(--transition);
-            font-size: 0.95rem;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 50%;
-            width: 0; height: 2px;
-            background: var(--primary-color);
-            transition: var(--transition);
-            transform: translateX(-50%);
-        }
-
-        .nav-link:hover { color: var(--primary-color); }
-        .nav-link:hover::after { width: 60%; }
-
-        /* --- Search Box --- */
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: #f1f5f9;
-            border-radius: 50px;
-            padding: 4px 18px;
-            border: 2px solid transparent;
-            transition: var(--transition);
-            flex: 0 1 350px;
-            margin: 0 30px;
-        }
-
-        .search-box:focus-within {
-            background: var(--white);
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 4px rgba(255, 64, 129, 0.1);
-            flex: 0 1 420px;
-        }
-
-        .search-input {
-            border: none;
-            background: transparent;
-            outline: none;
-            padding: 10px;
-            font-size: 0.9rem;
-            width: 100%;
-            color: var(--text-main);
-        }
-
-        .search-btn {
-            color: var(--text-muted);
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1.1rem;
-        }
-        .search-btn:hover { color: var(--primary-color); transform: rotate(15deg); }
-
-        /* --- Dropdown --- */
         .dropdown { position: relative; }
         .dropdown-content {
-            display: block;
-            position: absolute;
-            top: 120%;
-            left: 0;
-            background: var(--white);
-            min-width: 240px;
-            border-radius: 16px;
-            box-shadow: var(--shadow-soft);
-            border: 1px solid rgba(0,0,0,0.06);
-            padding: 10px;
-            z-index: 1100;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(15px);
-            transition: var(--transition);
+            display: none; position: absolute; top: 110%; left: 0; background: var(--white);
+            min-width: 240px; border-radius: 16px; box-shadow: var(--shadow-soft);
+            border: 1px solid rgba(0,0,0,0.06); padding: 10px; z-index: 1100;
         }
+        .dropdown:hover .dropdown-content { display: block; animation: slideUp 0.3s ease; }
+        .dropdown-item { display: flex; align-items: center; padding: 12px 18px; color: var(--text-muted); text-decoration: none; border-radius: 10px; font-size: 0.9rem; transition: 0.2s; }
+        .dropdown-item:hover { background: #fff0f6; color: var(--primary-color); padding-left: 24px; }
 
-        .dropdown:hover .dropdown-content {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
+        /* --- SEARCH --- */
+        .search-box { display: flex; align-items: center; background: #f1f5f9; border-radius: 50px; padding: 4px 18px; flex: 0 1 300px; margin: 0 20px; border: 2px solid transparent; }
+        .search-box:focus-within { background: var(--white); border-color: var(--primary-light); box-shadow: 0 0 0 4px rgba(255, 64, 129, 0.1); }
+        .search-input { border: none; background: transparent; outline: none; padding: 10px; width: 100%; font-size: 0.9rem; }
 
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            padding: 12px 18px;
-            color: var(--text-muted);
-            text-decoration: none;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .dropdown-item:hover {
-            background: #fff0f6;
-            color: var(--primary-color);
-            padding-left: 24px;
-        }
-
-        /* --- User Actions --- */
+        /* --- USER ACTIONS (AJAX READY) --- */
         .user-actions { display: flex; gap: 12px; align-items: center; }
-
-        .btn-action {
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        .btn-action { text-decoration: none; padding: 10px 20px; border-radius: 50px; font-weight: 700; font-size: 0.75em; display: flex; align-items: center; gap: 8px; transition: var(--transition); }
         .btn-login { color: var(--primary-color); background: #fff0f6; }
-        .btn-login:hover { background: var(--primary-color); color: white; transform: translateY(-2px); }
+        .btn-cart { background: var(--primary-color); color: white; box-shadow: 0 4px 12px rgba(255, 64, 129, 0.2); }
+        .btn-seller { background: var(--seller-color); color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2); }
+        
+        .cart-count { background: white; color: var(--primary-color); font-size: 11px; font-weight: 900; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
 
-        .btn-cart { 
-            background: var(--primary-color); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
-        }
-        .btn-cart:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 64, 129, 0.4); }
+        /* --- MAIN LAYOUT & STICKY SIDEBAR --- */
+        .main-container { max-width: 1400px; margin: 40px auto; padding: 0 25px; min-height: 100vh; }
+        .main-layout { display: grid; grid-template-columns: 300px 1fr; gap: 35px; align-items: start; }
 
-        .cart-count {
-            background: white;
-            color: var(--primary-color);
-            font-size: 11px;
-            font-weight: 900;
-            border-radius: 50%;
-            width: 20px; height: 20px;
-            display: flex; align-items: center; justify-content: center;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
+        .sidebar {
+            background: white; padding: 30px; border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            /* SIDEBAR CỐ ĐỊNH */
+            position: -webkit-sticky;
+            position: sticky; 
+            top: calc(var(--header-height) + 25px); 
+            height: fit-content;
         }
 
-        /* --- Main Layout --- */
-        .main-container { max-width: 1300px; margin: 50px auto; padding: 0 25px; min-height: 70vh; }
-        .content-card { 
-            background: var(--white); 
-            border-radius: 24px; 
-            padding: 40px; 
-            box-shadow: var(--shadow-soft); 
-            border: 1px solid rgba(255,255,255,0.6);
-        }
+        .filter-title { font-weight: 800; font-size: 0.85rem; color: var(--text-main); margin-bottom: 18px; border-bottom: 2px solid #f8fafc; padding-bottom: 10px; text-transform: uppercase; }
+        .filter-link { display: flex; align-items: center; justify-content: space-between; padding: 12px; text-decoration: none; color: var(--text-muted); font-size: 0.9rem; border-radius: 12px; transition: 0.3s; }
+        .filter-link:hover { background: #fff0f6; color: var(--primary-color); transform: translateX(5px); }
 
-        /* --- Upgraded Footer --- */
-        footer.footer { 
-            background: #0f172a; 
-            color: #94a3b8; 
-            padding: 80px 24px 40px; 
-            margin-top: 100px; 
-            position: relative;
-        }
-        .footer-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1.5fr;
-            gap: 50px;
-            padding-bottom: 50px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .footer h4 { color: white; margin-bottom: 25px; font-weight: 700; font-size: 1.1rem; }
-        .footer p { font-size: 0.95rem; margin-bottom: 15px; }
-        .footer-bottom { 
-            text-align: center; 
-            padding-top: 40px; 
-            font-size: 0.85rem; 
-            letter-spacing: 1px;
-            opacity: 0.7;
-        }
-    .main-layout {
-        display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 30px;
-        align-items: start;
-        max-width: 1400px;
-        margin: 0 auto;
-    }
-    .sidebar {
-        background: white; padding: 25px; border-radius: 20px;
-        box-shadow: var(--shadow-soft); position: sticky; top: 100px;
-    }
-    .filter-group { margin-bottom: 25px; }
-    .filter-title {
-        font-weight: 800; font-size: 0.9rem; color: var(--text-main);
-        margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #f8fafc;
-        display: flex; align-items: center; gap: 8px; text-transform: uppercase;
-    }
-    .filter-link {
-        display: flex; align-items: center; gap: 10px; padding: 10px;
-        text-decoration: none; color: var(--text-muted); font-size: 0.85rem;
-        border-radius: 10px; transition: var(--transition);
-    }
-    .filter-link:hover { background: #fff0f6; color: var(--primary-color); transform: translateX(5px); }
-    /* --- Custom Price Input Sidebar --- */
-.price-range-custom {
-    margin-top: 15px;
-    padding: 0 10px;
-}
+        /* --- PRICE FILTER FIX --- */
+        .price-input-wrapper { display: flex; align-items: center; gap: 8px; margin-top: 15px; }
+        .input-price { width: 100%; height: 45px; padding: 10px; border-radius: 12px; border: 2px solid #e2e8f0; outline: none; transition: 0.3s; font-size: 0.85rem; }
+        .input-price:focus { border-color: var(--primary-color); background: #fff; }
+        .btn-apply-price { background: var(--primary-color); color: white; min-width: 60px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; transition: 0.3s; flex-shrink: 0; cursor: pointer; border: none; }
+        .btn-apply-price:hover { background: var(--primary-dark); transform: scale(1.05); }
 
-.price-input-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
+        /* --- FOOTER --- */
+        footer.footer { background: var(--footer-bg); color: #94a3b8; padding: 80px 0 30px 0; margin-top: 100px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .footer-grid { max-width: 1300px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr; gap: 50px; padding: 0 25px 60px 25px; }
+        .footer h4 { color: white; font-size: 1.1rem; font-weight: 700; margin-bottom: 25px; text-transform: uppercase; position: relative; }
+        .footer h4::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 40px; height: 3px; background: var(--primary-color); }
+        .footer p { font-size: 0.95rem; line-height: 1.8; margin-bottom: 12px; }
+        .footer .fa-brands { font-size: 1.4rem; color: #94a3b8; transition: 0.3s; cursor: pointer; margin-right: 15px; }
+        .footer .fa-brands:hover { color: var(--primary-color); transform: translateY(-5px); }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.05); font-size: 0.85rem; color: #64748b; }
 
-.input-price {
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    font-size: 0.8rem;
-    font-family: inherit;
-    outline: none;
-    transition: var(--transition);
-}
+        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-.input-price:focus {
-    border-color: var(--primary-light);
-    box-shadow: 0 0 0 3px rgba(255, 64, 129, 0.1);
-}
-
-.price-input-wrapper .divider {
-    width: 10px;
-    height: 1px;
-    background: #cbd5e1;
-}
-
-.btn-apply-price {
-    background: var(--primary-color);
-    color: white;
-    width: 35px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: var(--transition);
-    flex-shrink: 0;
-}
-
-.btn-apply-price:hover {
-    background: var(--primary-dark);
-    transform: scale(1.05);
-}
-
-.btn-apply-price i {
-    font-size: 0.7rem;
-    opacity: 1 !important; /* Luôn hiện icon play */
-}
     </style>
 </head>
 <body>
     <form id="form1" runat="server">
+        <asp:ScriptManager ID="sm1" runat="server" />
+
         <div class="navbar-container">
             <header class="header">
                 <a href="trangchu.aspx" class="website-name">
-                    <i class="fa-solid fa-book-bookmark"></i>
-                    <span>BOOKSTORE</span>
+                    <i class="fa-solid fa-book-bookmark"></i><span>BOOKSTORE</span>
                 </a>
                 
                 <nav class="main-nav">
-                    <asp:HyperLink ID="lnkTrangChu" runat="server" NavigateUrl="~/trangchu.aspx" CssClass="nav-link">Trang chủ</asp:HyperLink>
+                    <asp:HyperLink runat="server" NavigateUrl="~/khach/trangchu.aspx" CssClass="nav-link">Trang chủ</asp:HyperLink>
+                    
                     <div class="dropdown">
-                        <asp:HyperLink ID="lnkDanhSach" runat="server" NavigateUrl="~/danhsach.aspx" CssClass="nav-link">
-                            Danh mục <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; margin-left: 4px; opacity: 0.5;"></i>
-                        </asp:HyperLink>
+                        <a href="#" class="nav-link">Thể loại <i class="fa-solid fa-layer-group" style="font-size: 0.7em; margin-left: 4px;"></i></a>
+                        <div class="dropdown-content">
+                            <asp:Repeater ID="rptPhanLoai" runat="server" DataSourceID="sqlPhanLoai">
+                                <ItemTemplate>
+                                    <asp:HyperLink runat="server" CssClass="dropdown-item" 
+                                        NavigateUrl='<%# "~/khach/danhsach.aspx?MaLoai=" + Eval("MaLoai") %>'>
+                                        <i class="fa-solid fa-tag" style="margin-right:8px; opacity:0.5;"></i><%# Eval("TenLoai") %>
+                                    </asp:HyperLink>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                        </div>
+                    </div>
+
+                    <div class="dropdown">
+                        <a href="#" class="nav-link">Danh mục <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i></a>
                         <div class="dropdown-content">
                             <asp:Repeater ID="rptChuDe" runat="server" DataSourceID="sqlChuDe">
                                 <ItemTemplate>
-                                    <asp:HyperLink ID="lnkChuDe" runat="server" 
-                                        NavigateUrl='<%# "~/danhsach.aspx?MaCD=" + Eval("MaCD") %>'
-                                        Text='<%# Eval("Tenchude") %>' CssClass="dropdown-item">
+                                    <asp:HyperLink runat="server" CssClass="dropdown-item"
+                                        NavigateUrl='<%# "~/khach/danhsach.aspx?MaCD=" + Eval("MaCD") %>'>
+                                        <%# Eval("Tenchude") %>
                                     </asp:HyperLink>
                                 </ItemTemplate>
                             </asp:Repeater>
@@ -371,99 +154,78 @@
                 </nav>
 
                 <div class="search-box">
-                    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Tìm tên sách, tác giả..."></asp:TextBox>
-                    <asp:LinkButton ID="btnSearch" runat="server" CssClass="search-btn" OnClick="BtnSearch_Click">
+                    <asp:TextBox ID="txtSearch" runat="server" CssClass="search-input" placeholder="Tìm tên sách..."></asp:TextBox>
+                    <asp:LinkButton ID="btnSearch" runat="server" OnClick="BtnSearch_Click" CssClass="nav-link">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </asp:LinkButton>
                 </div>
 
-                <div class="user-actions">
-    <asp:PlaceHolder ID="phAnonymous" runat="server">
-        <asp:HyperLink ID="lnkDangNhap" runat="server" NavigateUrl="~/dangnhap.aspx" CssClass="btn-action btn-login">
-            <i class="fa-regular fa-user-circle"></i> Tài khoản
-        </asp:HyperLink>
-    </asp:PlaceHolder>
+                <asp:UpdatePanel ID="upActions" runat="server" RenderMode="Inline">
+                    <ContentTemplate>
+                        <div class="user-actions">
+                            <asp:HyperLink ID="lnkDashboard" runat="server" NavigateUrl="~/Seller/Dashboard.aspx" 
+                                CssClass="btn-action btn-seller" Visible="false">
+                                <i class="fa-solid fa-gauge-high"></i> Quản lý
+                            </asp:HyperLink>
 
-    <asp:PlaceHolder ID="phUser" runat="server" Visible="false">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-main);">
-                <i class="fa-solid fa-circle-user" style="color: var(--primary-color)"></i> 
-                Chào, <asp:Literal ID="litUserName" runat="server"></asp:Literal>
-            </span>
-            <asp:LinkButton ID="btnLogout" runat="server" OnClick="BtnLogout_Click" 
-                CssClass="btn-action btn-login" Style="background: #f1f5f9; color: #64748b; padding: 6px 12px;">
-                Thoát
-            </asp:LinkButton>
-        </div>
-    </asp:PlaceHolder>
+                            <asp:PlaceHolder ID="phAnonymous" runat="server">
+                                <asp:HyperLink runat="server" NavigateUrl="~/khach/dangnhap.aspx" CssClass="btn-action btn-login">Tài khoản</asp:HyperLink>
+                            </asp:PlaceHolder>
 
-    <asp:HyperLink ID="lnkGioHang" runat="server" NavigateUrl="~/giohang.aspx" CssClass="btn-action btn-cart">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span class="cart-count" id="spCartCount" runat="server">0</span>
-    </asp:HyperLink>
-</div>
+                            <asp:PlaceHolder ID="phUser" runat="server" Visible="false">
+                                <span style="font-size: 0.75em; font-weight: 500;">Chào, <asp:Literal ID="litUserName" runat="server"></asp:Literal></span>
+                                <asp:LinkButton runat="server" OnClick="BtnLogout_Click" CssClass="nav-link" Style="color:red; font-size:0.8rem">Thoát</asp:LinkButton>
+                            </asp:PlaceHolder>
+
+                            <asp:HyperLink runat="server" NavigateUrl="~/giohang.aspx" CssClass="btn-action btn-cart">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </asp:HyperLink>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
             </header>
         </div>
 
-       <main class="main-container">
-    <div class="main-layout">
-       <aside class="sidebar">
-    <div class="filter-group">
-        <div class="filter-title">Sắp xếp</div>
-        <div class="filter-list">
-            <a href='<%= GetMasterFilterUrl("sort", "name_asc") %>' class="filter-link">
-                <span>Tên A - Z</span> <i class="fa-solid fa-chevron-right"></i>
-            </a>
-            <a href='<%= GetMasterFilterUrl("sort", "date_desc") %>' class="filter-link">
-                <span>Mới nhất</span> <i class="fa-solid fa-chevron-right"></i>
-            </a>
-        </div>
-    </div>
+        <main class="main-container">
+            <div class="main-layout">
+                <aside class="sidebar">
+                    <div class="filter-group">
+                        <div class="filter-title">Sắp xếp</div>
+                        <a href='<%= GetMasterFilterUrl("sort", "name_asc") %>' class="filter-link">Tên A - Z <i class="fa-solid fa-sort-alpha-down"></i></a>
+                        <a href='<%= GetMasterFilterUrl("sort", "date_desc") %>' class="filter-link">Mới nhất <i class="fa-solid fa-clock"></i></a>
+                    </div>
 
-    <div class="filter-group">
-        <div class="filter-title">Khoảng giá</div>
-        <div class="filter-list">
-            <a href='<%= GetMasterFilterUrl("price", "0-50") %>' class="filter-link">
-                <span>Dưới 50.000đ</span> <i class="fa-solid fa-circle-check"></i>
-            </a>
-            <a href='<%= GetMasterFilterUrl("price", "50-200") %>' class="filter-link">
-                <span>50k - 200k</span> <i class="fa-solid fa-circle-check"></i>
-            </a>
-            
-            <div class="price-range-custom">
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px;">Hoặc nhập khoảng giá:</p>
-                <div class="price-input-wrapper">
-                    <asp:TextBox ID="txtMinPrice" runat="server" CssClass="input-price" placeholder="Từ đ"></asp:TextBox>
-                    <span class="divider"></span>
-                    <asp:TextBox ID="txtMaxPrice" runat="server" CssClass="input-price" placeholder="Đến đ"></asp:TextBox>
-                    <asp:LinkButton ID="btnApplyPrice" runat="server" CssClass="btn-apply-price" OnClick="BtnApplyPrice_Click">
-                        <i class="fa-solid fa-play"></i>
-                    </asp:LinkButton>
+                    <div class="filter-group" style="margin-top:30px;">
+                        <div class="filter-title">Lọc giá</div>
+                        <a href='<%= GetMasterFilterUrl("price", "0-50") %>' class="filter-link">Dưới 50.000đ</a>
+                        <a href='<%= GetMasterFilterUrl("price", "50-200") %>' class="filter-link">50k - 200k</a>
+                        <div class="price-input-wrapper">
+                            <asp:TextBox ID="txtMinPrice" runat="server" CssClass="input-price" placeholder="Từ"></asp:TextBox>
+                            <asp:TextBox ID="txtMaxPrice" runat="server" CssClass="input-price" placeholder="Đến"></asp:TextBox>
+                            <asp:LinkButton ID="btnApplyPrice" runat="server" CssClass="btn-apply-price" OnClick="BtnApplyPrice_Click">
+                                <i class="fa-solid fa-play"></i>
+                            </asp:LinkButton>
+                        </div>
+                    </div>
+                    
+                    <a href="danhsach.aspx" class="filter-link" style="margin-top:20px; background:#f1f5f9; justify-content:center; font-weight:700;">XÓA TẤT CẢ LỌC</a>
+                </aside>
+
+                <div class="content-area">
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <a href="danhsach.aspx" class="filter-link btn-reset-filter">
-        <i class="fa-solid fa-rotate-left"></i> <span>XÓA TẤT CẢ LỌC</span>
-    </a>
-</aside>
-
-        <div class="content-area">
-             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
-        </div>
-    </div>
-</main>
+        </main>
 
         <footer class="footer">
             <div class="footer-grid">
                 <div>
                     <h4>Về BOOKSTORE</h4>
-                    <p>Chúng tôi tự hào là nền tảng kết nối tri thức hàng đầu, nơi bạn có thể tìm thấy những cuốn sách thay đổi cuộc đời và mua biệt thự.</p>
-                    <div style="display: flex; gap: 15px; margin-top: 20px;">
-                        <i class="fa-brands fa-facebook-f" style="cursor:pointer"></i>
-                        <i class="fa-brands fa-instagram" style="cursor:pointer"></i>
-                        <i class="fa-brands fa-tiktok" style="cursor:pointer"></i>
+                    <p>Nền tảng kết nối tri thức hàng đầu, nơi bạn có thể tìm thấy những cuốn sách thay đổi cuộc đời và mua biệt thự.</p>
+                    <div style="margin-top: 20px;">
+                        <i class="fa-brands fa-facebook-f"></i>
+                        <i class="fa-brands fa-instagram"></i>
+                        <i class="fa-brands fa-tiktok"></i>
                     </div>
                 </div>
                 <div>
@@ -480,9 +242,9 @@
                 </div>
                 <div>
                     <h4>Liên hệ</h4>
-                    <p><i class="fa-solid fa-location-dot" style="margin-right: 10px;"></i> tendou arisu, genji shimada</p>
-                    <p><i class="fa-solid fa-phone" style="margin-right: 10px;"></i> 1900 100 không có</p>
-                    <p><i class="fa-solid fa-envelope" style="margin-right: 10px;"></i> aquafina@fontaine.com</p>
+                    <p><i class="fa-solid fa-location-dot" style="margin-right: 10px; color:var(--primary-color)"></i> TP. Hồ Chí Minh</p>
+                    <p><i class="fa-solid fa-phone" style="margin-right: 10px; color:var(--primary-color)"></i> 1900 100 000</p>
+                    <p><i class="fa-solid fa-envelope" style="margin-right: 10px; color:var(--primary-color)"></i> aquafina@fontaine.com</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -490,9 +252,16 @@
             </div>
         </footer>
 
+        <asp:SqlDataSource ID="sqlPhanLoai" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:BookStoreDB %>" 
+            SelectCommand="SELECT * FROM PhanLoai" />
+
         <asp:SqlDataSource ID="sqlChuDe" runat="server" 
-            ConnectionString="Data Source=.;Initial Catalog=BookStoreDB;Integrated Security=True"
-            SelectCommand="SELECT MaCD, Tenchude FROM ChuDe ORDER BY Tenchude">
+            ConnectionString="<%$ ConnectionStrings:BookStoreDB %>"
+            SelectCommand="SELECT MaCD, Tenchude FROM ChuDe WHERE MaLoai = @MaLoai ORDER BY Tenchude">
+            <SelectParameters>
+                <asp:QueryStringParameter Name="MaLoai" QueryStringField="MaLoai" DefaultValue="1" Type="Int32" />
+            </SelectParameters>
         </asp:SqlDataSource>
     </form>
 </body>

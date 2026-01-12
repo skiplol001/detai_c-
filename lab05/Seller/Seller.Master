@@ -1,0 +1,51 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="~/Seller/Seller.master.cs" Inherits="lab05.Admin.Seller" %>
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Seller Panel - BookStore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+        :root { --seller-primary: #6366f1; --seller-bg: #f8fafc; --sidebar-width: 260px; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--seller-bg); display: flex; }
+        
+        /* Sidebar */
+        .sidebar { width: var(--sidebar-width); background: #1e293b; color: white; height: 100vh; position: fixed; }
+        .sidebar-header { padding: 30px 20px; font-size: 20px; font-weight: 800; text-align: center; border-bottom: 1px solid #334155; }
+        .nav-menu { padding: 20px 0; }
+        .nav-item { padding: 15px 25px; display: flex; align-items: center; gap: 12px; color: #cbd5e1; text-decoration: none; transition: 0.3s; }
+        .nav-item:hover, .nav-item.active { background: #334155; color: white; border-left: 4px solid var(--seller-primary); }
+        
+        /* Main Content */
+        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); min-height: 100vh; }
+        .top-bar { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .content-padding { padding: 30px; }
+        
+        .user-info { font-weight: 600; color: #334155; }
+        .btn-logout { color: #ef4444; text-decoration: none; font-size: 14px; }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="sidebar">
+            <div class="sidebar-header">SELLER PANEL</div>
+            <div class="nav-menu">
+                <a href="Dashboard.aspx" class="nav-item active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="QLSach.aspx" class="nav-item"><i class="fa-solid fa-book"></i> Quản lý Sách</a>
+                <a href="QLDonHang.aspx" class="nav-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
+                <a href="../khach/trangchu.aspx" class="nav-item"><i class="fa-solid fa-house"></i> Xem trang khách</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="user-info">Chào, <asp:Literal ID="litSellerName" runat="server"></asp:Literal></div>
+                <asp:LinkButton ID="btnLogout" runat="server" CssClass="btn-logout" OnClick="btnLogout_Click" CausesValidation="false">Đăng xuất <i class="fa-solid fa-right-from-bracket"></i></asp:LinkButton>
+            </div>
+            <div class="content-padding">
+                <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

@@ -67,10 +67,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="chitiet.aspx" />
-    <Content Include="dangky.aspx" />
-    <Content Include="dangnhap.aspx" />
-    <Content Include="danhsach.aspx" />
+    <Content Include="khach\chitiet.aspx" />
+    <Content Include="khach\dangky.aspx" />
+    <Content Include="khach\dangnhap.aspx" />
+    <Content Include="khach\danhsach.aspx" />
     <Content Include="default.aspx" />
     <Content Include="giohang.aspx" />
     <Content Include="Images\101Cakhuc.jpg" />
@@ -111,37 +111,41 @@
     <Content Include="Images\TH008.jpg" />
     <Content Include="Images\Vanhoatrungquoc.jpg" />
     <Content Include="Images\xuatan.jpg" />
+    <Content Include="Seller\QLDonHang.aspx" />
+    <Content Include="Seller\Seller.aspx" />
+    <Content Include="Seller\Dashboard.aspx" />
+    <Content Include="Seller\QLSach.aspx" />
     <Content Include="thanhtoan.aspx" />
-    <Content Include="trangchu.aspx" />
+    <Content Include="khach\trangchu.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="chitiet.aspx.cs">
+    <Compile Include="khach\chitiet.aspx.cs">
       <DependentUpon>chitiet.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="chitiet.aspx.designer.cs">
+    <Compile Include="khach\chitiet.aspx.designer.cs">
       <DependentUpon>chitiet.aspx</DependentUpon>
     </Compile>
-    <Compile Include="dangky.aspx.cs">
+    <Compile Include="khach\dangky.aspx.cs">
       <DependentUpon>dangky.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="dangky.aspx.designer.cs">
+    <Compile Include="khach\dangky.aspx.designer.cs">
       <DependentUpon>dangky.aspx</DependentUpon>
     </Compile>
-    <Compile Include="dangnhap.aspx.cs">
+    <Compile Include="khach\dangnhap.aspx.cs">
       <DependentUpon>dangnhap.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="dangnhap.aspx.designer.cs">
+    <Compile Include="khach\dangnhap.aspx.designer.cs">
       <DependentUpon>dangnhap.aspx</DependentUpon>
     </Compile>
-    <Compile Include="danhsach.aspx.cs">
+    <Compile Include="khach\danhsach.aspx.cs">
       <DependentUpon>danhsach.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="danhsach.aspx.designer.cs">
+    <Compile Include="khach\danhsach.aspx.designer.cs">
       <DependentUpon>danhsach.aspx</DependentUpon>
     </Compile>
     <Compile Include="default.aspx.cs">
@@ -166,6 +170,41 @@
       <DependentUpon>giohang.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seller\QLDonHang.aspx.cs">
+      <DependentUpon>QLDonHang.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seller\QLDonHang.aspx.designer.cs">
+      <DependentUpon>QLDonHang.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Seller\Seller.Master.cs">
+      <DependentUpon>Seller.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seller\Seller.Master.designer.cs">
+      <DependentUpon>Seller.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Seller\Seller.aspx.cs">
+      <DependentUpon>Seller.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seller\Seller.aspx.designer.cs">
+      <DependentUpon>Seller.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Seller\Dashboard.aspx.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seller\Dashboard.aspx.designer.cs">
+      <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Seller\QLSach.aspx.cs">
+      <DependentUpon>QLSach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seller\QLSach.aspx.designer.cs">
+      <DependentUpon>QLSach.aspx</DependentUpon>
+    </Compile>
     <Compile Include="thanhtoan.aspx.cs">
       <DependentUpon>thanhtoan.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -173,11 +212,11 @@
     <Compile Include="thanhtoan.aspx.designer.cs">
       <DependentUpon>thanhtoan.aspx</DependentUpon>
     </Compile>
-    <Compile Include="trangchu.aspx.cs">
+    <Compile Include="khach\trangchu.aspx.cs">
       <DependentUpon>trangchu.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="trangchu.aspx.designer.cs">
+    <Compile Include="khach\trangchu.aspx.designer.cs">
       <DependentUpon>trangchu.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -185,6 +224,7 @@
     <Content Include="Images\Thumbs.db" />
     <Content Include="default.Master" />
     <None Include="packages.config" />
+    <Content Include="Seller\Seller.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

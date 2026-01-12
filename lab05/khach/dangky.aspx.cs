@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -37,17 +42,21 @@ namespace lab05
                             return;
                         }
 
-                        // 2. Nếu chưa tồn tại thì tiến hành INSERT
-                        string sql = @"INSERT INTO KhachHang (HoTenKH, Diachi, Dienthoai, TenDN, Matkhau, Ngaysinh, Email) 
-                                      VALUES (@hoten, @diachi, @sdt, @tendn, @mk, @ngaysinh, @email)";
+                        // 2. Xác định MaRole (1: Người mua, 2: Người bán)
+                        int maRole = chkBanHang.Checked ? 2 : 1;
+
+                        // 3. Tiến hành INSERT thêm cột MaRole
+                        string sql = @"INSERT INTO KhachHang (HoTenKH, Diachi, Dienthoai, TenDN, Matkhau, Ngaysinh, Email, MaRole) 
+                                      VALUES (@hoten, @diachi, @sdt, @tendn, @mk, @ngaysinh, @email, @marole)";
 
                         SqlCommand cmd = new SqlCommand(sql, conn);
                         cmd.Parameters.AddWithValue("@hoten", txtHoTen.Text.Trim());
                         cmd.Parameters.AddWithValue("@diachi", txtDiachi.Text.Trim());
                         cmd.Parameters.AddWithValue("@sdt", txtSDT.Text.Trim());
                         cmd.Parameters.AddWithValue("@tendn", txtTendangnhap.Text.Trim());
-                        cmd.Parameters.AddWithValue("@mk", txtMatkhau.Text); // Nên mã hóa MD5/Bcrypt nếu có thể
+                        cmd.Parameters.AddWithValue("@mk", txtMatkhau.Text);
                         cmd.Parameters.AddWithValue("@email", txtEmail.Text.Trim());
+                        cmd.Parameters.AddWithValue("@marole", maRole);
 
                         // Xử lý ngày sinh nếu để trống
                         if (string.IsNullOrEmpty(txtNgay.Text))
@@ -61,8 +70,9 @@ namespace lab05
                             lblThongBao.Text = "Đăng ký thành công! Đang chuyển hướng...";
                             lblThongBao.ForeColor = System.Drawing.Color.Green;
 
-                            // Đợi 2 giây rồi chuyển sang trang đăng nhập
-                            Response.Write("<script>setTimeout(function(){ window.location='dangnhap.aspx'; }, 2000);</script>");
+                            // Chuyển hướng sau 2 giây
+                            string script = "setTimeout(function(){ window.location='dangnhap.aspx'; }, 2000);";
+                            ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
                         }
                     }
                 }

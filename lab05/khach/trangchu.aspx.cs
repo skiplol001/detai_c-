@@ -18,10 +18,6 @@ namespace lab05
             {
                 int maSach = Convert.ToInt32(e.CommandArgument);
                 ThemSachVaoSession(maSach);
-
-                // Cập nhật số lượng trên Header của Master Page
-                var masterPage = this.Master as Default;
-                if (masterPage != null) masterPage.CapNhatSoLuongGioHang();
             }
         }
 

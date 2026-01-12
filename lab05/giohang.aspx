@@ -50,7 +50,7 @@
                                 <td style="color:#ff4081; font-weight:bold"><%# Eval("Thanhtien", "{0:#,##0}") %></td>
                                 <td>
                                     <asp:Button ID="btnUpdate" runat="server" Text="Lưu" CommandName="Update" CommandArgument='<%# Eval("MaSach") %>' CssClass="btn-update" />
-                                    <asp:Button ID="btnDelete" runat="server" Text="Xóa" CommandName="Delete" CommandArgument='<%# Eval("MaSach") %>' CssClass="btn-delete" OnClientClick="return confirm('Xóa sách này?')" />
+                                    <asp:Button ID="btnDelete" runat="server" Text="Xóa" CommandName="Delete" CommandArgument='<%# Eval("MaSach") %>' CssClass="btn-delete" />
                                 </td>
                             </tr>
                         </ItemTemplate>

@@ -11,169 +11,160 @@ namespace lab05
 {
 
 
-    public partial class Default
+    public partial class dangky
     {
 
         /// <summary>
-        /// head control.
+        /// txtHoTen control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder head;
+        protected global::System.Web.UI.WebControls.TextBox txtHoTen;
 
         /// <summary>
-        /// form1 control.
+        /// rfv1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv1;
 
         /// <summary>
-        /// sm1 control.
+        /// txtTendangnhap control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager sm1;
+        protected global::System.Web.UI.WebControls.TextBox txtTendangnhap;
 
         /// <summary>
-        /// rptPhanLoai control.
+        /// rfv2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptPhanLoai;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv2;
 
         /// <summary>
-        /// rptChuDe control.
+        /// txtMatkhau control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptChuDe;
+        protected global::System.Web.UI.WebControls.TextBox txtMatkhau;
 
         /// <summary>
-        /// txtSearch control.
+        /// rfv3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv3;
 
         /// <summary>
-        /// btnSearch control.
+        /// txtCfmk control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnSearch;
+        protected global::System.Web.UI.WebControls.TextBox txtCfmk;
 
         /// <summary>
-        /// upActions control.
+        /// cv1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upActions;
+        protected global::System.Web.UI.WebControls.CompareValidator cv1;
 
         /// <summary>
-        /// lnkDashboard control.
+        /// txtEmail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkDashboard;
+        protected global::System.Web.UI.WebControls.TextBox txtEmail;
 
         /// <summary>
-        /// phAnonymous control.
+        /// rev1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phAnonymous;
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator rev1;
 
         /// <summary>
-        /// phUser control.
+        /// txtSDT control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phUser;
+        protected global::System.Web.UI.WebControls.TextBox txtSDT;
 
         /// <summary>
-        /// litUserName control.
+        /// rfv4 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litUserName;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfv4;
 
         /// <summary>
-        /// txtMinPrice control.
+        /// txtDiachi control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMinPrice;
+        protected global::System.Web.UI.WebControls.TextBox txtDiachi;
 
         /// <summary>
-        /// txtMaxPrice control.
+        /// txtNgay control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMaxPrice;
+        protected global::System.Web.UI.WebControls.TextBox txtNgay;
 
         /// <summary>
-        /// btnApplyPrice control.
+        /// chkBanHang control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnApplyPrice;
+        protected global::System.Web.UI.WebControls.CheckBox chkBanHang;
 
         /// <summary>
-        /// ContentPlaceHolder1 control.
+        /// btndangky control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder ContentPlaceHolder1;
+        protected global::System.Web.UI.WebControls.Button btndangky;
 
         /// <summary>
-        /// sqlPhanLoai control.
+        /// lblThongBao control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlPhanLoai;
-
-        /// <summary>
-        /// sqlChuDe control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource sqlChuDe;
+        protected global::System.Web.UI.WebControls.Label lblThongBao;
     }
 }

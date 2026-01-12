@@ -7,56 +7,47 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace lab05
+namespace lab05.Admin
 {
 
 
-    public partial class chitiet
+    public partial class Dashboard
     {
 
         /// <summary>
-        /// FormViewChiTiet control.
+        /// litRevenue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.FormView FormViewChiTiet;
+        protected global::System.Web.UI.WebControls.Literal litRevenue;
 
         /// <summary>
-        /// rptSachCungChuDe control.
+        /// litOrders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptSachCungChuDe;
+        protected global::System.Web.UI.WebControls.Literal litOrders;
 
         /// <summary>
-        /// pnlNoRelated control.
+        /// litBooks control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlNoRelated;
+        protected global::System.Web.UI.WebControls.Literal litBooks;
 
         /// <summary>
-        /// SqlDataSourceChiTiet control.
+        /// gvRecentOrders control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceChiTiet;
-
-        /// <summary>
-        /// SqlDataSourceSachCungChuDe control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSourceSachCungChuDe;
+        protected global::System.Web.UI.WebControls.GridView gvRecentOrders;
     }
 }

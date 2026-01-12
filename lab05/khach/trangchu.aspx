@@ -5,7 +5,7 @@
         .page-title { color: var(--text-main); text-align: center; font-size: 32px; font-weight: 800; margin: 40px 0; text-transform: uppercase; letter-spacing: 1px; position: relative; padding-bottom: 15px; }
         .page-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary-color); border-radius: 2px; }
         
-        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 30px; max-width: 1300px; margin: 0 auto 50px auto; padding: 0 15px; }
+        .books-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 30px; max-width: 1300px; margin: 0 auto 50px auto; padding: 0 15px; }
         
         .book-item { background: #fff; border-radius: 16px; padding: 20px; text-align: center; border: 1px solid #f1f5f9; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; position: relative; }
         .book-item:hover { transform: translateY(-12px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: var(--primary-light); }
@@ -26,6 +26,13 @@
         .btn-detail { background: #f1f5f9; color: var(--text-main); }
         
         .message { position: fixed; top: 100px; right: 25px; padding: 18px 30px; border-radius: 12px; color: white; font-weight: 600; z-index: 9999; display: none; box-shadow: 0 15px 30px rgba(0,0,0,0.15); background-color: #10b981; }
+  .button-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+        .btn-ui { padding: 10px 5px; border-radius: 10px; font-weight: 700; font-size: 0.75rem; text-decoration: none; cursor: pointer; border: none; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        
+        .btn-add-cart { background: var(--primary-color); color: white; }
+        .btn-add-cart:hover { background: var(--primary-dark); transform: scale(1.02); }
+        .btn-detail { background: #f1f5f9; color: var(--text-main); }
+        .btn-detail:hover { background: #2196F3; color: white !important; }
     </style>
 
     <script>
@@ -48,7 +55,7 @@
                     <div class="book-item">
                         <div class="new-badge">Mới</div>
                         <div class="image-wrapper">
-                            <img src='<%# "Images/" + (Eval("AnhBia") != DBNull.Value ? Eval("AnhBia") : "no-image.jpg") %>' class="book-image" />
+                            <img src='<%# "../Images/" + (Eval("AnhBia") != DBNull.Value ? Eval("AnhBia") : "no-image.jpg") %>' class="book-image" />
                         </div>
                         <div class="book-info">
                             <div class="book-name"><%# Eval("TenSach") %></div>

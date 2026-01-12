@@ -77,7 +77,7 @@ namespace lab05
 
                     // 3. Xóa giỏ hàng và thông báo
                     Session["Cart"] = null;
-                    Response.Write("<script>alert('Chúc mừng! Đơn hàng của bạn đã được đặt thành công.'); window.location='trangchu.aspx';</script>");
+                    Response.Write("<script>alert('Chúc mừng! Đơn hàng của bạn đã được đặt thành công.'); window.location='/khach/trangchu.aspx';</script>");
                 }
                 catch (Exception ex)
                 {

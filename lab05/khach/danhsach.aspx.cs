@@ -138,13 +138,7 @@ namespace lab05
                 int maSach = Convert.ToInt32(e.CommandArgument);
                 ThemSachVaoSession(maSach);
 
-                // Cập nhật icon giỏ hàng trên Master Page
-                // Đảm bảo Master Page của bạn có tên class là 'Default'
-                var master = Master as Default;
-                if (master != null)
-                {
-                    master.CapNhatSoLuongGioHang();
-                }
+               
             }
         }
 
