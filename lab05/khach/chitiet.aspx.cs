@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
@@ -16,7 +15,7 @@ namespace lab05
         {
             if (!IsPostBack)
             {
-                // Kiểm tra trạng thái đăng nhập để hiện form bình luận
+                // Fix: Kiểm tra Session an toàn hơn
                 if (Session["MaKH"] == null)
                 {
                     pnlCommentForm.Visible = false;
@@ -30,9 +29,9 @@ namespace lab05
             }
         }
 
-        // 1. Hàm vẽ sao đánh giá
         public string RenderStars(object stars)
         {
+            if (stars == null || stars == DBNull.Value) return "☆☆☆☆☆";
             int count = Convert.ToInt32(stars);
             string result = "";
             for (int i = 1; i <= 5; i++)
@@ -42,7 +41,6 @@ namespace lab05
             return result;
         }
 
-        // 2. Xử lý gửi Bình luận
         protected void btnGuiBL_Click(object sender, EventArgs e)
         {
             if (Session["MaKH"] == null) return;
@@ -55,6 +53,7 @@ namespace lab05
             if (string.IsNullOrEmpty(noiDung))
             {
                 lblMsg.Text = "Bạn chưa nhập nội dung bình luận!";
+                lblMsg.ForeColor = System.Drawing.Color.Red;
                 return;
             }
 
@@ -62,8 +61,7 @@ namespace lab05
             {
                 using (SqlConnection con = new SqlConnection(strCon))
                 {
-                    string sql = "INSERT INTO Comment(MaSach, MaKH, NoiDung, DanhGia, NgayBL) " +
-                                 "VALUES (@MaSach, @MaKH, @NoiDung, @DanhGia, GETDATE())";
+                    string sql = "INSERT INTO Comment(MaSach, MaKH, NoiDung, DanhGia, NgayBL) VALUES (@MaSach, @MaKH, @NoiDung, @DanhGia, GETDATE())";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@MaSach", maSach);
                     cmd.Parameters.AddWithValue("@MaKH", maKH);
@@ -74,7 +72,6 @@ namespace lab05
                     cmd.ExecuteNonQuery();
                 }
 
-                // Reset form và load lại danh sách bình luận
                 txtNoiDungBL.Text = "";
                 lblMsg.Text = "Gửi bình luận thành công!";
                 lblMsg.ForeColor = System.Drawing.Color.Green;
@@ -83,10 +80,10 @@ namespace lab05
             catch (Exception ex)
             {
                 lblMsg.Text = "Lỗi: " + ex.Message;
+                lblMsg.ForeColor = System.Drawing.Color.Red;
             }
         }
 
-        // 3. Xử lý thêm vào Giỏ hàng (Session DataTable)
         protected void btnThemGioHang_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)sender;
@@ -111,8 +108,8 @@ namespace lab05
                 {
                     if (row["MaSach"].ToString() == maSach)
                     {
-                        row["Soluong"] = (int)row["Soluong"] + 1;
-                        row["Thanhtien"] = (int)row["Soluong"] * (decimal)row["Dongia"];
+                        row["Soluong"] = Convert.ToInt32(row["Soluong"]) + 1;
+                        row["Thanhtien"] = Convert.ToInt32(row["Soluong"]) * Convert.ToDecimal(row["Dongia"]);
                         exists = true; break;
                     }
                 }
@@ -130,7 +127,10 @@ namespace lab05
                 }
 
                 Session["Cart"] = dtCart;
-                Response.Write("<script>alert('Đã thêm vào giỏ hàng!');</script>");
+
+                // Fix: Dùng script an toàn thay vì Response.Write
+                string script = "alert('Đã thêm " + r["TenSach"].ToString().Replace("'", "\\'") + " vào giỏ hàng!');";
+                ClientScript.RegisterStartupScript(this.GetType(), "AddToCart", script, true);
             }
         }
 

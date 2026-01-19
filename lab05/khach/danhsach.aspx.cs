@@ -9,7 +9,6 @@ namespace lab05
 {
     public partial class danhsach : System.Web.UI.Page
     {
-        // Sử dụng chuỗi kết nối từ Web.config
         string strCon = ConfigurationManager.ConnectionStrings["BookStoreDB"].ConnectionString;
         int pageSize = 6;
         protected string TenChuDeHienTai = "";
@@ -35,16 +34,24 @@ namespace lab05
         private void LoadTenChuDe()
         {
             string maCD = Request.QueryString["MaCD"];
-            if (!string.IsNullOrEmpty(maCD))
+            string maLoai = Request.QueryString["MaLoai"];
+
+            using (SqlConnection con = new SqlConnection(strCon))
             {
-                using (SqlConnection con = new SqlConnection(strCon))
+                con.Open();
+                if (!string.IsNullOrEmpty(maCD))
                 {
                     string sql = "SELECT Tenchude FROM ChuDe WHERE MaCD = @ID";
                     SqlCommand cmd = new SqlCommand(sql, con);
                     cmd.Parameters.AddWithValue("@ID", maCD);
-                    con.Open();
-                    object result = cmd.ExecuteScalar();
-                    if (result != null) TenChuDeHienTai = result.ToString();
+                    TenChuDeHienTai = cmd.ExecuteScalar()?.ToString();
+                }
+                else if (!string.IsNullOrEmpty(maLoai))
+                {
+                    string sql = "SELECT TenLoai FROM PhanLoai WHERE MaLoai = @ID";
+                    SqlCommand cmd = new SqlCommand(sql, con);
+                    cmd.Parameters.AddWithValue("@ID", maLoai);
+                    TenChuDeHienTai = "THỂ LOẠI: " + cmd.ExecuteScalar()?.ToString();
                 }
             }
         }
@@ -52,6 +59,7 @@ namespace lab05
         private void LoadBooks()
         {
             string maCD = Request.QueryString["MaCD"];
+            string maLoai = Request.QueryString["MaLoai"];
             string search = Request.QueryString["search"];
             string sort = Request.QueryString["sort"];
             string price = Request.QueryString["price"];
@@ -68,6 +76,11 @@ namespace lab05
                 // 1. Xây dựng WHERE clause động
                 string whereClause = " WHERE 1=1";
                 if (!string.IsNullOrEmpty(maCD)) whereClause += " AND MaCD = @MaCD";
+
+                // FIX: Lọc theo MaLoai (Lấy tất cả MaCD thuộc MaLoai này)
+                if (!string.IsNullOrEmpty(maLoai))
+                    whereClause += " AND MaCD IN (SELECT MaCD FROM ChuDe WHERE MaLoai = @MaLoai)";
+
                 if (!string.IsNullOrEmpty(search)) whereClause += " AND TenSach LIKE @Search";
 
                 if (!string.IsNullOrEmpty(price))
@@ -87,49 +100,55 @@ namespace lab05
                 if (sort == "date_desc") orderSql = "Ngaycapnhat DESC";
                 else if (sort == "price_asc") orderSql = "Dongia ASC";
 
-                // 3. Thực thi lấy dữ liệu (OFFSET FETCH yêu cầu SQL 2012+)
+                // 3. Lấy dữ liệu phân trang
                 string sqlData = $@"SELECT * FROM Sach {whereClause} ORDER BY {orderSql} 
                                    OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
                 SqlCommand cmdData = new SqlCommand(sqlData, conn);
-
-                // Add Parameters cho cmdData
-                if (!string.IsNullOrEmpty(maCD)) cmdData.Parameters.AddWithValue("@MaCD", maCD);
-                if (!string.IsNullOrEmpty(search)) cmdData.Parameters.AddWithValue("@Search", "%" + search + "%");
-                if (string.IsNullOrEmpty(price))
-                {
-                    if (!string.IsNullOrEmpty(min)) cmdData.Parameters.AddWithValue("@Min", min);
-                    if (!string.IsNullOrEmpty(max)) cmdData.Parameters.AddWithValue("@Max", max);
-                }
+                AddParameters(cmdData, maCD, maLoai, search, min, max);
                 cmdData.Parameters.AddWithValue("@Offset", (CurrentPage - 1) * pageSize);
                 cmdData.Parameters.AddWithValue("@PageSize", pageSize);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmdData);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                rptSach.DataSource = dt;
-                rptSach.DataBind();
 
-                // 4. Lệnh đếm tổng để phân trang (Dùng SqlCommand riêng để tránh lỗi reuse Parameter)
+                // 4. Đếm tổng số dòng (để hiện Panel Empty và Phân trang)
                 SqlCommand cmdCount = new SqlCommand($"SELECT COUNT(*) FROM Sach {whereClause}", conn);
-                if (!string.IsNullOrEmpty(maCD)) cmdCount.Parameters.AddWithValue("@MaCD", maCD);
-                if (!string.IsNullOrEmpty(search)) cmdCount.Parameters.AddWithValue("@Search", "%" + search + "%");
-                if (string.IsNullOrEmpty(price))
-                {
-                    if (!string.IsNullOrEmpty(min)) cmdCount.Parameters.AddWithValue("@Min", min);
-                    if (!string.IsNullOrEmpty(max)) cmdCount.Parameters.AddWithValue("@Max", max);
-                }
+                AddParameters(cmdCount, maCD, maLoai, search, min, max);
 
                 conn.Open();
                 int totalRows = (int)cmdCount.ExecuteScalar();
                 conn.Close();
+
+                // Xử lý hiển thị
+                if (totalRows == 0)
+                {
+                    rptSach.Visible = false;
+                    pnlEmpty.Visible = true;
+                }
+                else
+                {
+                    rptSach.Visible = true;
+                    pnlEmpty.Visible = false;
+                    rptSach.DataSource = dt;
+                    rptSach.DataBind();
+                }
 
                 int totalPages = (int)Math.Ceiling((double)totalRows / pageSize);
                 BindPagination(totalPages);
             }
         }
 
-
+        // Hàm phụ để tránh lặp code khi thêm tham số SQL
+        private void AddParameters(SqlCommand cmd, string maCD, string maLoai, string search, string min, string max)
+        {
+            if (!string.IsNullOrEmpty(maCD)) cmd.Parameters.AddWithValue("@MaCD", maCD);
+            if (!string.IsNullOrEmpty(maLoai)) cmd.Parameters.AddWithValue("@MaLoai", maLoai);
+            if (!string.IsNullOrEmpty(search)) cmd.Parameters.AddWithValue("@Search", "%" + search + "%");
+            if (!string.IsNullOrEmpty(min)) cmd.Parameters.AddWithValue("@Min", min);
+            if (!string.IsNullOrEmpty(max)) cmd.Parameters.AddWithValue("@Max", max);
+        }
 
         protected void rptSach_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
@@ -137,25 +156,12 @@ namespace lab05
             {
                 int maSach = Convert.ToInt32(e.CommandArgument);
                 ThemSachVaoSession(maSach);
-
-               
             }
         }
 
         private void ThemSachVaoSession(int maSach)
         {
-            DataTable dtCart;
-            if (Session["Cart"] == null)
-            {
-                dtCart = new DataTable();
-                dtCart.Columns.Add("MaSach", typeof(int));
-                dtCart.Columns.Add("TenSach", typeof(string));
-                dtCart.Columns.Add("HinhAnh", typeof(string));
-                dtCart.Columns.Add("Dongia", typeof(decimal));
-                dtCart.Columns.Add("Soluong", typeof(int));
-                dtCart.Columns.Add("Thanhtien", typeof(decimal));
-            }
-            else { dtCart = (DataTable)Session["Cart"]; }
+            DataTable dtCart = (Session["Cart"] == null) ? CreateCartTable() : (DataTable)Session["Cart"];
 
             bool exists = false;
             foreach (DataRow row in dtCart.Rows)
@@ -194,6 +200,18 @@ namespace lab05
             Session["Cart"] = dtCart;
         }
 
+        private DataTable CreateCartTable()
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add("MaSach", typeof(int));
+            dt.Columns.Add("TenSach", typeof(string));
+            dt.Columns.Add("HinhAnh", typeof(string));
+            dt.Columns.Add("Dongia", typeof(decimal));
+            dt.Columns.Add("Soluong", typeof(int));
+            dt.Columns.Add("Thanhtien", typeof(decimal));
+            return dt;
+        }
+
         private void BindPagination(int totalPages)
         {
             if (totalPages <= 0) totalPages = 1;
@@ -211,13 +229,10 @@ namespace lab05
         protected string GetPageUrl(object pageNum)
         {
             string url = Request.Path + "?";
-            if (Request.QueryString.AllKeys.Length > 0)
+            foreach (string key in Request.QueryString.AllKeys)
             {
-                foreach (string key in Request.QueryString.AllKeys)
-                {
-                    if (key != null && key != "page")
-                        url += key + "=" + Server.UrlEncode(Request.QueryString[key]) + "&";
-                }
+                if (key != null && key != "page")
+                    url += key + "=" + Server.UrlEncode(Request.QueryString[key]) + "&";
             }
             return url + "page=" + pageNum;
         }

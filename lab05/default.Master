@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="default.master.cs" Inherits="lab05.Default" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="default.Master.cs" Inherits="lab05.Default" %>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -26,8 +26,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-body); color: var(--text-main); line-height: 1.6; }
 
-        /* --- HEADER STICKY (GLASSMORPHISM) --- */
-        .navbar-container {
+         .navbar-container {
             position: sticky; top: 0; z-index: 1000;
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
@@ -75,7 +74,18 @@
         /* --- MAIN LAYOUT & STICKY SIDEBAR --- */
         .main-container { max-width: 1400px; margin: 40px auto; padding: 0 25px; min-height: 100vh; }
         .main-layout { display: grid; grid-template-columns: 300px 1fr; gap: 35px; align-items: start; }
+        .main-layout.no-sidebar {
+    display: block;      /* Hủy chế độ Grid để thẻ con tự do căn giữa */
+    width: 100%;
+    max-width: 100%;     /* Đảm bảo khung bao ngoài rộng hết cỡ */
+}
 
+.main-layout.no-sidebar .content-area {
+    width: 100%;
+    display: flex;       /* Dùng Flexbox để đẩy nội dung vào giữa */
+    justify-content: center; 
+    align-items: center;
+}
         .sidebar {
             background: white; padding: 30px; border-radius: 24px;
             box-shadow: var(--shadow-soft);
@@ -125,7 +135,7 @@
                     <asp:HyperLink runat="server" NavigateUrl="~/khach/trangchu.aspx" CssClass="nav-link">Trang chủ</asp:HyperLink>
                     
                     <div class="dropdown">
-                        <a href="#" class="nav-link">Thể loại <i class="fa-solid fa-layer-group" style="font-size: 0.7em; margin-left: 4px;"></i></a>
+                        <a class="nav-link">Thể loại <i class="fa-solid fa-layer-group" style="font-size: 0.7em; margin-left: 4px;"></i></a>
                         <div class="dropdown-content">
                             <asp:Repeater ID="rptPhanLoai" runat="server" DataSourceID="sqlPhanLoai">
                                 <ItemTemplate>
@@ -139,7 +149,7 @@
                     </div>
 
                     <div class="dropdown">
-                        <a href="#" class="nav-link">Danh mục <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i></a>
+                        <a  class="nav-link">Danh mục <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i></a>
                         <div class="dropdown-content">
                             <asp:Repeater ID="rptChuDe" runat="server" DataSourceID="sqlChuDe">
                                 <ItemTemplate>
@@ -186,36 +196,37 @@
             </header>
         </div>
 
-        <main class="main-container">
-            <div class="main-layout">
-                <aside class="sidebar">
-                    <div class="filter-group">
-                        <div class="filter-title">Sắp xếp</div>
-                        <a href='<%= GetMasterFilterUrl("sort", "name_asc") %>' class="filter-link">Tên A - Z <i class="fa-solid fa-sort-alpha-down"></i></a>
-                        <a href='<%= GetMasterFilterUrl("sort", "date_desc") %>' class="filter-link">Mới nhất <i class="fa-solid fa-clock"></i></a>
-                    </div>
+     <main class="main-container">
+    <div class='<%= sideBar.Visible ? "main-layout" : "main-layout no-sidebar" %>'>
+        
+        <aside id="sideBar" runat="server" class="sidebar">
+            <div class="filter-group">
+                <div class="filter-title">Sắp xếp</div>
+                <a href='<%= GetMasterFilterUrl("sort", "name_asc") %>' class="filter-link">Tên A - Z <i class="fa-solid fa-sort-alpha-down"></i></a>
+                <a href='<%= GetMasterFilterUrl("sort", "date_desc") %>' class="filter-link">Mới nhất <i class="fa-solid fa-clock"></i></a>
+            </div>
 
-                    <div class="filter-group" style="margin-top:30px;">
-                        <div class="filter-title">Lọc giá</div>
-                        <a href='<%= GetMasterFilterUrl("price", "0-50") %>' class="filter-link">Dưới 50.000đ</a>
-                        <a href='<%= GetMasterFilterUrl("price", "50-200") %>' class="filter-link">50k - 200k</a>
-                        <div class="price-input-wrapper">
-                            <asp:TextBox ID="txtMinPrice" runat="server" CssClass="input-price" placeholder="Từ"></asp:TextBox>
-                            <asp:TextBox ID="txtMaxPrice" runat="server" CssClass="input-price" placeholder="Đến"></asp:TextBox>
-                            <asp:LinkButton ID="btnApplyPrice" runat="server" CssClass="btn-apply-price" OnClick="BtnApplyPrice_Click">
-                                <i class="fa-solid fa-play"></i>
-                            </asp:LinkButton>
-                        </div>
-                    </div>
-                    
-                    <a href="danhsach.aspx" class="filter-link" style="margin-top:20px; background:#f1f5f9; justify-content:center; font-weight:700;">XÓA TẤT CẢ LỌC</a>
-                </aside>
-
-                <div class="content-area">
-                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+            <div class="filter-group" style="margin-top:30px;">
+                <div class="filter-title">Lọc giá</div>
+                <a href='<%= GetMasterFilterUrl("price", "0-50") %>' class="filter-link">Dưới 50.000đ</a>
+                <a href='<%= GetMasterFilterUrl("price", "50-200") %>' class="filter-link">50k - 200k</a>
+                <div class="price-input-wrapper">
+                    <asp:TextBox ID="txtMinPrice" runat="server" CssClass="input-price" placeholder="Từ"></asp:TextBox>
+                    <asp:TextBox ID="txtMaxPrice" runat="server" CssClass="input-price" placeholder="Đến"></asp:TextBox>
+                    <asp:LinkButton ID="btnApplyPrice" runat="server" CssClass="btn-apply-price" OnClick="BtnApplyPrice_Click">
+                        <i class="fa-solid fa-play"></i>
+                    </asp:LinkButton>
                 </div>
             </div>
-        </main>
+            
+            <a href="danhsach.aspx" class="filter-link" style="margin-top:20px; background:#f1f5f9; justify-content:center; font-weight:700;">XÓA TẤT CẢ LỌC</a>
+        </aside>
+
+        <div class="content-area">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+        </div>
+    </div>
+</main>
 
         <footer class="footer">
             <div class="footer-grid">

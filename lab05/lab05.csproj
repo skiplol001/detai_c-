@@ -116,6 +116,8 @@
     <Content Include="Seller\Seller.aspx" />
     <Content Include="Seller\Dashboard.aspx" />
     <Content Include="Seller\QLSach.aspx" />
+    <Content Include="Seller\SuaSach.aspx" />
+    <Content Include="Seller\ThemSach.aspx" />
     <Content Include="thanhtoan.aspx" />
     <Content Include="khach\trangchu.aspx" />
     <Content Include="Web.config" />
@@ -205,6 +207,20 @@
     </Compile>
     <Compile Include="Seller\QLSach.aspx.designer.cs">
       <DependentUpon>QLSach.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Seller\SuaSach.aspx.cs">
+      <DependentUpon>SuaSach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seller\SuaSach.aspx.designer.cs">
+      <DependentUpon>SuaSach.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Seller\ThemSach.aspx.cs">
+      <DependentUpon>ThemSach.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Seller\ThemSach.aspx.designer.cs">
+      <DependentUpon>ThemSach.aspx</DependentUpon>
     </Compile>
     <Compile Include="thanhtoan.aspx.cs">
       <DependentUpon>thanhtoan.aspx</DependentUpon>

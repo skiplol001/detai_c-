@@ -14,13 +14,17 @@ namespace lab05
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            string activePage = Request.Url.AbsolutePath.ToLower();
+            if (activePage.Contains("dangnhap.aspx") || activePage.Contains("dangky.aspx"))
+            {
+                sideBar.Visible = false;
+            }
+
             if (!IsPostBack)
             {
                 KiemTraDangNhap();
             }
-        }
-
-        // --- XỬ LÝ NAV AJAX ---
+        }  
         protected void NavTheLoai_Click(object sender, EventArgs e)
         {
             string maLoai = ((LinkButton)sender).CommandArgument;
@@ -73,9 +77,9 @@ namespace lab05
             Response.Redirect("~/khach/danhsach.aspx?min=" + txtMinPrice.Text.Trim() + "&max=" + txtMaxPrice.Text.Trim());
         }
 
-        protected string GetMasterFilterUrl(string paramName, string value)
+        public string GetMasterFilterUrl(string paramName, string value)
         {
-            string url = "~/khach/danhsach.aspx?";
+            string url = "/khach/danhsach.aspx?";
             var query = Request.QueryString;
             foreach (string key in query.AllKeys)
             {

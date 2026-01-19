@@ -15,6 +15,7 @@
         /* Style cho checkbox */
         .checkbox-container { display: flex; align-items: center; gap: 8px; font-weight: 600; color: #ff4081; cursor: pointer; }
         .checkbox-container input { width: 18px; height: 18px; cursor: pointer; }
+          body { cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto !important; }
     </style>
 </asp:Content>
 

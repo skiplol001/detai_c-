@@ -37,11 +37,11 @@
 
         /* --- CHIBI & CURSOR TEST --- */
         body { cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto !important; }
-        #chibi-pet { position: fixed; bottom: 20px; left: 20px; width: 80px; z-index: 1000;transition: all 0.8s ease; }
-        #chibi-pet img { width: 100%; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); }
+        /*#chibi-pet { position: fixed; bottom: 20px; left: 20px; width: 80px; z-index: 1000;transition: all 0.8s ease; }
+        #chibi-pet img { width: 100%; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.2)); }*/
     </style>
 
-    <script>
+   <%-- <script>
        
 
         function moveChibi() {
@@ -52,7 +52,7 @@
             pet.style.left = randomX + "px";
         }
         setInterval(moveChibi, 6000);
-    </script>
+    </script>--%>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">

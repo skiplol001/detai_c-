@@ -20,6 +20,7 @@
         .btn-pay:hover { background: var(--primary-dark); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 64, 129, 0.3); }
         
         @media (max-width: 992px) { .checkout-container { grid-template-columns: 1fr; } }
+          body { cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto !important; }
     </style>
 </asp:Content>
 

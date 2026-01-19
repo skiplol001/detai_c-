@@ -13,6 +13,7 @@
         .btn-delete { background: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
         .cart-actions { margin-top: 20px; text-align: center; }
         .btn-order { background: #ff4081; color: white; padding: 10px 30px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-decoration: none; }
+          body { cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto !important; }
     </style>
 </asp:Content>
 

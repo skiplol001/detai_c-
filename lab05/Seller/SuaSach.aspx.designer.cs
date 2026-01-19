@@ -7,65 +7,83 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace lab05
+namespace lab05.Seller
 {
 
 
-    public partial class danhsach
+    public partial class SuaSach
     {
 
         /// <summary>
-        /// hTitle control.
+        /// txtTenSach control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl hTitle;
+        protected global::System.Web.UI.WebControls.TextBox txtTenSach;
 
         /// <summary>
-        /// pnlEmpty control.
+        /// ddlChuDe control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEmpty;
+        protected global::System.Web.UI.WebControls.DropDownList ddlChuDe;
 
         /// <summary>
-        /// rptSach control.
+        /// ddlNXB control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptSach;
+        protected global::System.Web.UI.WebControls.DropDownList ddlNXB;
 
         /// <summary>
-        /// lnkPrev control.
+        /// txtGia control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkPrev;
+        protected global::System.Web.UI.WebControls.TextBox txtGia;
 
         /// <summary>
-        /// rptPagination control.
+        /// imgHienTai control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptPagination;
+        protected global::System.Web.UI.WebControls.Image imgHienTai;
 
         /// <summary>
-        /// lnkNext control.
+        /// fuAnh control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink lnkNext;
+        protected global::System.Web.UI.WebControls.FileUpload fuAnh;
+
+        /// <summary>
+        /// txtMoTa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMoTa;
+
+        /// <summary>
+        /// btnCapNhat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCapNhat;
     }
 }

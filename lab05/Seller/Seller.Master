@@ -30,7 +30,7 @@
         <div class="sidebar">
             <div class="sidebar-header">SELLER PANEL</div>
             <div class="nav-menu">
-                <a href="Dashboard.aspx" class="nav-item active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="Dashboard.aspx" class="nav-item"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
                 <a href="QLSach.aspx" class="nav-item"><i class="fa-solid fa-book"></i> Quản lý Sách</a>
                 <a href="QLDonHang.aspx" class="nav-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
                 <a href="../khach/trangchu.aspx" class="nav-item"><i class="fa-solid fa-house"></i> Xem trang khách</a>

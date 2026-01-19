@@ -34,6 +34,7 @@
         .comment-date { font-size: 11px; color: #999; margin-left: 10px; }
         .comment-stars { color: #ffc107; font-size: 16px; margin: 5px 0; }
         .login-req { background: #fff3f8; padding: 15px; border-radius: 8px; text-align: center; color: #ff4081; }
+          body { cursor: url('https://cur.cursors-4u.net/games/gam-4/gam372.cur'), auto !important; }
     </style>
 </asp:Content>
 
